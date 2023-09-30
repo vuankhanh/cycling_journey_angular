@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
     imports: [CommonModule],
@@ -27,7 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
         MatInputModule,
         MatFormFieldModule,
         MatIconModule,
-        
+        MatListModule
     ]
 })
 export class MaterialModule {}

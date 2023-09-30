@@ -11,7 +11,10 @@ import { MaterialModule } from '../shared/modules/material';
 import { MapsComponent } from './maps.component';
 import { NewMilestonesComponent } from '../shared/components/new-milestones/new-milestones.component';
 import { MilestonesComponent } from '../shared/components/milestones/milestones.component';
+
+//directives
 import { DisableDefaultRightMouseClickDirective } from '../shared/directives/disable-default-right-mouse-click.directive';
+// import { InputOnlyNumberDirective } from '../shared/directives/only-number-input.directive';
 
 
 @NgModule({
@@ -21,7 +24,8 @@ import { DisableDefaultRightMouseClickDirective } from '../shared/directives/dis
     MilestonesComponent,
 
     //directives
-    DisableDefaultRightMouseClickDirective
+    DisableDefaultRightMouseClickDirective,
+    // InputOnlyNumberDirective
   ],
   imports: [
     CommonModule,

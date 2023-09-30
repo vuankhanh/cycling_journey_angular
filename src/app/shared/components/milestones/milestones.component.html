@@ -1,1 +1,10 @@
-<p>milestones works!</p>
+<mat-list>
+    <div mat-subheader>Folders</div>
+    <mat-list-item *ngFor="let folder of milestones">
+      <mat-icon matListItemIcon>folder</mat-icon>
+      <div matListItemTitle>{{folder.name}}</div>
+      <div matListItemLine>{{folder.createdAt | date}}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <div mat-subheader>Notes</div>
+</mat-list>

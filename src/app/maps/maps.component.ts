@@ -3,6 +3,7 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
 import { NewMilestonesComponent } from '../shared/components/new-milestones/new-milestones.component';
+import { Subscription } from 'rxjs';
 
 const centerMap: google.maps.LatLngLiteral = {
   lat: 16.48933704291298,
@@ -16,6 +17,7 @@ const centerMap: google.maps.LatLngLiteral = {
 })
 export class MapsComponent {
   @ViewChild('contextMenu') contextMenu!: TemplateRef<any>;
+  subscription: Subscription = new Subscription();
   display: google.maps.LatLngLiteral = {
     lat: 0,
     lng: 0
@@ -72,23 +74,26 @@ export class MapsComponent {
       .top(`${clientY}px`)
       .left(`${clientX}px`);
     config.hasBackdrop = true;
-    config.backdropClass = 'cdk-overlay-transparent-backdrop'
+    config.backdropClass = 'cdk-overlay-transparent-backdrop';
 
     this.overlayRef = this.overlay.create(config);
     this.overlayRef.attach(new TemplatePortal(this.contextMenu, this.viewContainerRef, {
       $implicit: coordinates
     }));
-    this.overlayRef.backdropClick().forEach(e=>{
-      this.closeFusilliPanel();
-    })
+    this.subscription.add(
+      this.overlayRef.backdropClick().subscribe(e=>{
+        this.closeFusilliPanel();
+      })
+    )
   }
 
-  closeFusilliPanel() {
+  private closeFusilliPanel() {
     this.overlayRef?.dispose();
     this.overlayRef = undefined;
   }
 
   addNewStone(coordinates: google.maps.LatLng){
+    this.closeFusilliPanel();
     const dialogRef = this.dialog.open(NewMilestonesComponent, {
       data: coordinates
     });
@@ -96,5 +101,9 @@ export class MapsComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 }

@@ -1,10 +1,19 @@
 <h2 mat-dialog-title align="center">Thêm cột mốc mới</h2>
 <mat-dialog-content class="mat-typography">
-  <form [formGroup]="newMilestoneGroup" fxLayout="column" fxLayoutGap="2px">
+  <form
+    [formGroup]="newMilestoneGroup"
+    fxLayout="column"
+    fxLayoutGap="2px"
+  >
 
     <mat-form-field appearance="outline">
       <mat-label>Số thứ tự(bắt buộc)</mat-label>
-      <input matInput placeholder="Thêm số thứ tự" formControlName="numericalOrder">
+      <input
+        matInput
+        placeholder="Thêm số thứ tự"
+        formControlName="numericalOrder"
+        appInputOnlyNumber
+      >
       <mat-error>Hãy nhập số thứ tự hợp lệ</mat-error>
     </mat-form-field>
 
@@ -15,9 +24,9 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Tên cột mốc(bắt buộc)</mat-label>
-      <input matInput placeholder="Thêm tên cột mốc" formControlName="name">
-      <mat-error>Hãy nhập tên hợp lệ</mat-error>
+      <mat-label>Địa chỉ(bắt buộc)</mat-label>
+      <input matInput placeholder="Thêm địa chỉ" formControlName="address">
+      <mat-error>Nhập địa chỉ hợp lệ</mat-error>
     </mat-form-field>
 
     <google-map
@@ -36,17 +45,22 @@
     <div>
       <div>
         <span>Lat: </span>
-        <span>{{newMilestoneGroup.value.coordinates.lat}}</span>
+        <span>{{ newMilestoneGroup.value.coordinates.lat }}</span>
       </div>
       <div>
         <span>Lng: </span>
-        <span>{{newMilestoneGroup.value.coordinates.lng}}</span>
+        <span>{{ newMilestoneGroup.value.coordinates.lng }}</span>
       </div>
     </div>
 
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+  <button mat-button mat-dialog-close>Hủy</button>
+  <button
+    mat-button
+    type="submit"
+    [disabled]="newMilestoneGroup.invalid"
+    (click)="submit()"
+  >Thêm mới</button>
 </mat-dialog-actions>

@@ -57,7 +57,13 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -69,7 +75,8 @@
               "browserTarget": "cycling_journey_angular:build:production"
             },
             "development": {
-              "browserTarget": "cycling_journey_angular:build:development"
+              "browserTarget": "cycling_journey_angular:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
