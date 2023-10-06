@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment.development';
   providedIn: 'root'
 })
 export class MilestoneService {
-  private url: string = environment.backend+'/milestone'
+  private url: string = environment.backendApi+'/milestone'
   constructor(
     private httpClient: HttpClient
   ) { }

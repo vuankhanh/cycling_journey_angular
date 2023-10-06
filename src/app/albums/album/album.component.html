@@ -1,0 +1,12 @@
+<mat-grid-list cols="6" >
+    <mat-grid-tile *ngFor="let album of albums" [routerLink]="album.route">
+        <img [src]="album.thumbnail | baseUrl" [alt]="album.description">
+            
+        <mat-grid-tile-footer>
+            <mat-list-item>
+                <div matListItemTitle>{{album.name}}</div>
+                <div matListItemLine>{{album.mediaItems}}</div>
+              </mat-list-item>
+        </mat-grid-tile-footer>
+    </mat-grid-tile>
+</mat-grid-list>

@@ -10,10 +10,6 @@ export class DisableDefaultRightMouseClickDirective {
   ) { }
   @HostListener('document:contextmenu', ['$event'])
   onRightClick(event: PointerEvent) {
-    console.log(event);
-    
-    console.log(event.target);
-    
     const checkIsTargeted = this.elementRef.nativeElement.contains(event.target);
     if(checkIsTargeted){
       event.preventDefault();

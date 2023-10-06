@@ -1,3 +1,4 @@
 export const environment = {
-    backend: 'http://localhost:4200/api'
+    backendApi: 'http://localhost:4200/api',
+    backendStatic: 'http://localhost:4200/static'
 };
