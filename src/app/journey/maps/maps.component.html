@@ -1,0 +1,23 @@
+
+  <h1>How to Integrate Google Maps in Angular 16 - ItSolutionStuff.com</h1>
+  <google-map #googleMap height="800px" width="900px" [options]="gmOptions" (mapClick)="mapLeftMouseClick($event)"
+    (mapRightclick)="mapRightMouseClick($event)" (mapMousemove)="move($event)">
+    <map-marker #marker="mapMarker" *ngFor="let milestone of milestones" [position]="milestone.coordinates" (mapClick)="openInfoWindow(marker, milestone)">
+    </map-marker>
+    <map-info-window>
+      <app-custom-info-window [milestone]="milestoneMarker" *ngIf="milestoneMarker"></app-custom-info-window>
+    </map-info-window>
+  </google-map>
+
+  <div>Latitude: {{display.lat ? display.lat : ''}}</div>
+  <div>Longitude: {{display.lng ? display.lng : ''}}</div>
+
+
+<ng-template #contextMenu let-coordinates>
+  <div class="example-menu">
+    <button class="example-menu-item" [cdkCopyToClipboard]="coordinates.toString()">
+      {{ coordinates.toUrlValue() }}
+    </button>
+    <button class="example-menu-item" (click)="addNewStone(coordinates)">Thêm cột mốc</button>
+  </div>
+</ng-template>

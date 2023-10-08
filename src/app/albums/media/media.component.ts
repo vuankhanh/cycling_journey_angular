@@ -20,49 +20,49 @@ export class MediaComponent {
     private activetedRoute: ActivatedRoute,
     private albumService: AlbumService,
     private setBaseUrlPipe: SetBaseUrlPipe
-  ){
+  ) {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
     let albumDetail$ = this.activetedRoute.params.pipe(
-      map(params=>params['mediaId']),
-      switchMap(mediaId=>this.albumService.getDetail(mediaId))
+      map(params => params['mediaId']),
+      switchMap(mediaId => this.albumService.getDetail(mediaId))
     );
-    
+
     this.subscription.add(
-      albumDetail$.subscribe(res=>{
+      albumDetail$.subscribe(res => {
         console.log(res);
-        
+
         const metaData: Album = res.metaData;
         this.albumDetail = metaData;
         console.log(this.albumDetail);
-        
+
         this.initImages(this.albumDetail.media)
         console.log(this.albumDetail);
-        
+
       })
     )
   }
 
-  private initImages(medias: Array<Media>){
+  private initImages(medias: Array<Media>) {
     console.log(medias);
-    
-    for(let [index, media] of medias.entries()){
-        const src = this.setBaseUrlPipe.transform(media.url);
-        const thumbSrc = this.setBaseUrlPipe.transform(media.thumbnailUrl);
-        const galleryItem: GalleryItem = {
-          src,
-          thumbSrc,
-          alt: media.caption,
-          description: media.description,
-          video: media.type === 'video' ? true : false
-        }
-        this.galleryItems.push(galleryItem)
+
+    for (let [index, media] of medias.entries()) {
+      const src = this.setBaseUrlPipe.transform(media.url);
+      const thumbSrc = this.setBaseUrlPipe.transform(media.thumbnailUrl);
+      const galleryItem: GalleryItem = {
+        src,
+        thumbSrc,
+        alt: media.caption,
+        description: media.description,
+        video: media.type === 'video' ? true : false
+      }
+      this.galleryItems.push(galleryItem)
     }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 }

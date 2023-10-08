@@ -5,23 +5,31 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MapsRoutingModule } from './maps-routing.module';
+import { MapsRoutingModule } from './journey-routing.module';
 import { MaterialModule } from '../shared/modules/material';
 
-import { MapsComponent } from './maps.component';
+import { JourneyComponent } from './journey.component';
+import { MapsComponent } from './maps/maps.component';
 import { NewMilestonesComponent } from '../shared/components/new-milestones/new-milestones.component';
-import { MilestonesComponent } from '../shared/components/milestones/milestones.component';
+import { MilestonesComponent } from './milestones/milestones.component';
+import { CustomInfoWindowComponent } from '../shared/components/custom-info-window/custom-info-window.component';
 
 //directives
 import { DisableDefaultRightMouseClickDirective } from '../shared/directives/disable-default-right-mouse-click.directive';
-// import { InputOnlyNumberDirective } from '../shared/directives/only-number-input.directive';
+
+//pipes
+import { SharingPipesModule } from '../shared/pipes/sharing-pipes.module';
+import { SetBaseUrlPipe } from '../shared/pipes/set-base-url.pipe';
+import { GalleryComponent } from '@daelmaak/ngx-gallery';
 
 
 @NgModule({
   declarations: [
     //componets
+    JourneyComponent,
     MapsComponent,
     MilestonesComponent,
+    CustomInfoWindowComponent,
 
     //directives
     DisableDefaultRightMouseClickDirective,
@@ -37,8 +45,14 @@ import { DisableDefaultRightMouseClickDirective } from '../shared/directives/dis
     GoogleMapsModule,
     FlexLayoutModule,
 
+    GalleryComponent,
+
     //stand alone component
-    NewMilestonesComponent
-  ]
+    NewMilestonesComponent,
+
+    //Sharing pipes
+    SharingPipesModule
+  ],
+  providers: [SetBaseUrlPipe]
 })
-export class MapsModule { }
+export class JourneyModule { }

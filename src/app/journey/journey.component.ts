@@ -1,22 +1,27 @@
 import { Component } from '@angular/core';
-import { MilestoneService } from '../../services/api/backend/milestone.service';
+import { MilestoneService } from '../shared/services/api/backend/milestone.service';
+import { Milestone, MilestonesResponse } from '../shared/models/Milestones';
+
 import { Subscription } from 'rxjs';
-import { Milestones, MilestonesResponse } from '../../models/Milestones';
 
 @Component({
-  selector: 'app-milestones',
-  templateUrl: './milestones.component.html',
-  styleUrls: ['./milestones.component.scss']
+  selector: 'app-journey',
+  templateUrl: './journey.component.html',
+  styleUrls: ['./journey.component.scss']
 })
-export class MilestonesComponent {
-  milestones: Array<Milestones> = [];
+export class JourneyComponent {
+  milestones: Array<Milestone> = [];
   subscription: Subscription = new Subscription();
   constructor(
     private milestoneService: MilestoneService
   ){
-
+    
   }
   ngOnInit(){
+    this.getMilestones();
+  }
+
+  private getMilestones(){
     this.subscription.add(
       this.milestoneService.getAll().subscribe(res=>{
         console.log(res);
@@ -24,6 +29,11 @@ export class MilestonesComponent {
         this.milestones = milestoneRespone.metaData;
       })
     )
+  }
+
+  listenNewMilestone(newMilestone: Milestone){
+    console.log(newMilestone);
+    this.milestones.push(newMilestone)
   }
 
   ngOnDestroy(){

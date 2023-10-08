@@ -1,0 +1,37 @@
+mat-dialog-content{
+    form{
+        padding: 15px 0;
+        .dropzone {
+            background-color: #ffffff;
+            border: 1px dashed #cccccc;
+            padding: 10px;
+            font-size: 16px;
+            width: 500px;
+            height: 200px;
+            cursor: pointer;
+        }
+        
+        .dropzone:hover {
+            background-color: #f2f2f2;
+        }
+        
+        .dropzone.active {
+            background-color: #eeeeee;
+        }
+        
+        .dropzone .icon {
+            font-size: 32px;
+            color: #666666;
+        }
+        
+        .dropzone .text {
+            margin-top: 10px;
+        }
+
+        mat-list{
+            mat-list-item{
+                height: fit-content;
+            }
+        }
+    }
+}

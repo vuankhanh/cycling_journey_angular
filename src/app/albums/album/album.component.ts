@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { UploadComponent } from 'src/app/shared/components/upload/upload.component';
 import { Album } from 'src/app/shared/models/Album';
 import { AlbumService } from 'src/app/shared/services/api/backend/album.service';
 
@@ -12,7 +14,8 @@ export class AlbumComponent {
   albums: Array<Album> = [];
   private subscription: Subscription = new Subscription();
   constructor(
-    private albumService: AlbumService
+    private albumService: AlbumService,
+    private dialog: MatDialog
   ){
 
   }
@@ -28,6 +31,19 @@ export class AlbumComponent {
         this.albums = metaData;
         console.log(`albums: `);
         console.log(this.albums);
+      })
+    )
+  }
+
+  openUploadDialog(){
+    const dialogRef = this.dialog.open(UploadComponent);
+
+    this.subscription.add(
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          const newAlbum: Album = result;
+          this.albums.push(newAlbum);
+        }
       })
     )
   }

@@ -7,29 +7,28 @@ import { MaterialModule } from '../shared/modules/material';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
 
 import { AlbumsComponent } from './albums.component';
-import { UploadComponent } from './upload/upload.component';
-import { ShowsComponent } from './shows/shows.component';
 import { AlbumComponent } from './album/album.component';
+import { MediaComponent } from './media/media.component';
+import { UploadComponent } from '../shared/components/upload/upload.component';
 
 //pipes
 import { SetBaseUrlPipe } from '../shared/pipes/set-base-url.pipe';
-import { MediaComponent } from './media/media.component';
+import { SharingPipesModule } from '../shared/pipes/sharing-pipes.module';
 
 
 @NgModule({
   declarations: [
     AlbumsComponent,
-    UploadComponent,
-    ShowsComponent,
     AlbumComponent,
-
-    //pipes
-    SetBaseUrlPipe,
     MediaComponent,
+
   ],
   imports: [
     CommonModule,
     MaterialModule,
+    SharingPipesModule,
+    
+    UploadComponent,
     
     GalleryComponent,
 

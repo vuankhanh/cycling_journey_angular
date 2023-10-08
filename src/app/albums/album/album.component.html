@@ -1,4 +1,7 @@
 <mat-grid-list cols="6" >
+    <mat-grid-tile class="icon-only" (click)="openUploadDialog()">
+        <mat-icon fontIcon="add"></mat-icon>
+    </mat-grid-tile>
     <mat-grid-tile *ngFor="let album of albums" [routerLink]="album.route">
         <img [src]="album.thumbnail | baseUrl" [alt]="album.description">
             

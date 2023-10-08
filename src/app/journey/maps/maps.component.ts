@@ -1,9 +1,14 @@
-import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
-import { NewMilestonesComponent } from '../shared/components/new-milestones/new-milestones.component';
+import { NewMilestonesComponent } from '../../shared/components/new-milestones/new-milestones.component';
+import { Milestone } from 'src/app/shared/models/Milestones';
 import { Subscription } from 'rxjs';
+import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { GalleryItem } from '@daelmaak/ngx-gallery';
+import { Media } from 'src/app/shared/models/Album';
+import { SetBaseUrlPipe } from 'src/app/shared/pipes/set-base-url.pipe';
 
 const centerMap: google.maps.LatLngLiteral = {
   lat: 16.48933704291298,
@@ -16,7 +21,13 @@ const centerMap: google.maps.LatLngLiteral = {
   styleUrls: ['./maps.component.scss']
 })
 export class MapsComponent {
+  @Input() milestones: Array<Milestone> = [];
+  @Output() newMilestone = new EventEmitter<Milestone>();
+  @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
   @ViewChild('contextMenu') contextMenu!: TemplateRef<any>;
+
+  milestoneMarker?: Milestone = undefined;
+  galleryItems: GalleryItem[] = [];
   subscription: Subscription = new Subscription();
   display: google.maps.LatLngLiteral = {
     lat: 0,
@@ -34,7 +45,8 @@ export class MapsComponent {
   constructor(
     public overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private setBaseUrlPipe: SetBaseUrlPipe
   ) {
 
   }
@@ -57,6 +69,12 @@ export class MapsComponent {
         this.openFusilliPanel(domEvent, latLng)
       }, 0);
     }
+  }
+
+  openInfoWindow(marker: MapMarker, milestone: Milestone) {
+    this.milestoneMarker = milestone;
+    
+    this.infoWindow.open(marker);
   }
 
   move(event: google.maps.MapMouseEvent) {
@@ -95,11 +113,16 @@ export class MapsComponent {
   addNewStone(coordinates: google.maps.LatLng){
     this.closeFusilliPanel();
     const dialogRef = this.dialog.open(NewMilestonesComponent, {
-      data: coordinates
+      data: coordinates,
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      if(result){
+        const newMilestone: Milestone = result;
+        this.newMilestone.emit(newMilestone);
+      }
     });
   }
 

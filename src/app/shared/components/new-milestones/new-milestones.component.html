@@ -1,19 +1,10 @@
 <h2 mat-dialog-title align="center">Thêm cột mốc mới</h2>
 <mat-dialog-content class="mat-typography">
-  <form
-    [formGroup]="newMilestoneGroup"
-    fxLayout="column"
-    fxLayoutGap="2px"
-  >
+  <form [formGroup]="newMilestoneGroup" fxLayout="column" fxLayoutGap="2px">
 
     <mat-form-field appearance="outline">
       <mat-label>Số thứ tự(bắt buộc)</mat-label>
-      <input
-        matInput
-        placeholder="Thêm số thứ tự"
-        formControlName="numericalOrder"
-        appInputOnlyNumber
-      >
+      <input matInput placeholder="Thêm số thứ tự" formControlName="numericalOrder" appInputOnlyNumber>
       <mat-error>Hãy nhập số thứ tự hợp lệ</mat-error>
     </mat-form-field>
 
@@ -29,17 +20,25 @@
       <mat-error>Nhập địa chỉ hợp lệ</mat-error>
     </mat-form-field>
 
-    <google-map
-      #googleMap
-      height="150px"
-      width="450px"
-      [options]="gmOptions"
-    >
-      <map-marker
-        [position]="coordinatesIsSeleted"
-        [options]="markerOptions"
-        (mapDragend)="markerDraggend($event)"
-      >
+    <mat-form-field appearance="outline">
+      <mat-label>Ngày(bắt buộc)</mat-label>
+      <input matInput [matDatepicker]="picker" placeholder="Nhập ngày (Ngày/tháng/năm)" formControlName="dateTime">
+      <mat-hint>Ngày/tháng/năm</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error>Hãy chọn ngày hợp lệ</mat-error>
+    </mat-form-field>
+
+    <div fxLayout="row" class="album_id_container">
+      <div fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="2px" *ngIf="album">
+        <span>{{'Album đã chọn: '}}</span>
+        <span>{{ album.name }}</span>
+      </div>
+      <button mat-button type="button" (click)="chooseAlbum()">Chọn album</button>
+    </div>
+
+    <google-map #googleMap [options]="gmOptions">
+      <map-marker [position]="coordinatesIsSeleted" [options]="markerOptions" (mapDragend)="markerDraggend($event)">
       </map-marker>
     </google-map>
     <div>
@@ -57,10 +56,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Hủy</button>
-  <button
-    mat-button
-    type="submit"
-    [disabled]="newMilestoneGroup.invalid"
-    (click)="submit()"
-  >Thêm mới</button>
+  <button mat-button type="submit" [disabled]="newMilestoneGroup.invalid" (click)="submit()">Thêm mới</button>
 </mat-dialog-actions>

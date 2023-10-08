@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlbumDetailRespone, AlbumResponse } from 'src/app/shared/models/Album';
 import { environment } from 'src/environments/environment.development';
@@ -17,14 +17,16 @@ export class AlbumService {
   getDetail(mediaId: string){
     return this.httpClient.get<AlbumDetailRespone>(this.url+'/'+mediaId);
   }
-  create(files: Array<Blob>, des: string){
+  create(name: string, files: Array<Blob>, description: string){
+    let params = new HttpParams();
+    params = params.append('name', name)
     const formData = new FormData();
     if(files.length){
       for(let [index, file] of files.entries()){
         formData.append('many-files', file);
       }
     }
-    formData.append('description', des);
-    return this.httpClient.post<AlbumResponse>(this.url, formData);
+    formData.append('description', description);
+    return this.httpClient.post<AlbumDetailRespone>(this.url, formData, { params });
   }
 }

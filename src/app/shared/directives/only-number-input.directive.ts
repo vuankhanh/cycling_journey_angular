@@ -25,8 +25,6 @@ export class InputOnlyNumberDirective {
   }
   @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent) {
-    console.log('ss');
-    
     if (
       this.navigationKeys.indexOf(e.key) > -1 || // Allow: navigation keys: backspace, delete, arrows etc.
       (e.key === 'a' && e.ctrlKey === true) || // Allow: Ctrl+A

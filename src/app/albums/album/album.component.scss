@@ -1,3 +1,11 @@
+.icon-only{
+    background: none;
+    mat-icon{
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+    }
+}
 mat-grid-tile {
     background: lightblue;
     cursor: pointer;

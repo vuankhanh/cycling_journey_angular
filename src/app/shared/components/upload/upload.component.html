@@ -1,0 +1,47 @@
+<h2 mat-dialog-title align="center">Tải file lên Server</h2>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="fileGroup" fxLayout="column" fxLayoutGap="2px">
+        <mat-form-field appearance="outline">
+            <mat-label>Tên Album(bắt buộc)</mat-label>
+            <input
+              matInput
+              placeholder="Hãy nhập tên album"
+              formControlName="name"
+            >
+            <mat-error>Hãy nhập tên album hợp lệ</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Mô tả</mat-label>
+            <textarea
+              matInput
+              placeholder="Hãy nhập mô tả"
+              rows="5"
+              formControlName="description"
+            >
+            </textarea>
+        </mat-form-field>
+        <div class="dropzone" fxLayout="row" fxLayoutAlign="center center" appDragDrop (files)="filesDropped($event)" (click)="file.click()">
+            <div class="text-wrapper">
+                <div class="centered">Drop your file here!</div>
+            </div>
+        </div>
+        <!--droped image preview-->
+        <mat-list>
+            <mat-list-item *ngFor="let file of files">
+                <img matListItemMeta *ngIf="file" [src]="file.url" width="100px" height="100px">
+                <button matListItemMeta mat-button type="button">asdsad</button>
+                <div matListItemTitle>{{file.file.name}}</div>
+                <div matListItemLine>{{file.file.size | formatFileSize:false}}</div>
+            </mat-list-item>
+        </mat-list>
+
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Hủy</button>
+    <button mat-button type="submit" [disabled]="fileGroup.invalid" (click)="submit()">Tải lên</button>
+</mat-dialog-actions>
+
+
+<!-- Hidden element -->
+<input type="file" accept="image/jpg, image/png, video/mov, video/mp4" #file [style.visibility]="'hidden'">

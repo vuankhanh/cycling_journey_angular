@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'maps',
-    loadChildren: ()=> import('./maps/maps.module').then(m=>m.MapsModule)
+    path: 'journey',
+    loadChildren: ()=> import('./journey/journey.module').then(m=>m.JourneyModule)
   },
   {
     path: 'albums',
@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'maps',
+    redirectTo: 'journey',
     pathMatch: 'full'
   }
 ];

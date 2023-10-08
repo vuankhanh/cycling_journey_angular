@@ -1,0 +1,11 @@
+<ng-container *ngIf="milestone">
+    <mat-list-item>
+        <mat-icon matListItemIcon>folder</mat-icon>
+        <div matListItemTitle>{{milestone.name}}</div>
+        <div matListItemLine>{{milestone.createdAt | date}}</div>
+    </mat-list-item>
+    {{galleryItems.length}}
+    <ng-container *ngIf="galleryItems.length">
+        <gallery [items]="galleryItems"></gallery>
+    </ng-container>
+</ng-container>

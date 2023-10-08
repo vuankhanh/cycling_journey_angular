@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Hộp chọn Album</h1>
+<div mat-dialog-content>
+    <mat-grid-list cols="6">
+        <mat-grid-tile *ngFor="let album of albums" (click)="selectionAlbum(album)"
+            [matTooltip]="album.name"
+            [ngClass]="album._id === albumIsSelectedControl.value?._id ? 'active' : ''">
+            <img [src]="album.thumbnail | baseUrl" [alt]="album.description">
+
+            <mat-grid-tile-footer>
+                <mat-list-item>
+                    <div matListItemTitle>{{album.name}}</div>
+                    <div matListItemLine>{{album.mediaItems}}</div>
+                </mat-list-item>
+            </mat-grid-tile-footer>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">No Thanks</button>
+    <button mat-button [disabled]="albumIsSelectedControl.invalid" [mat-dialog-close]="albumIsSelectedControl.value">Ok</button>
+</div>

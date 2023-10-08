@@ -1,5 +1,20 @@
 mat-dialog-content{
     form{
         padding: 15px 0;
+
+        .album_id_container{
+            button{
+                min-width: fit-content;
+            }
+        }
+
+        google-map{
+            width: 450px;
+            height: 200px;
+            ::ng-deep .map-container{
+                width: 100% !important;
+                height: 100% !important;
+            }
+        }
     }
 }
