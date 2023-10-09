@@ -14,6 +14,7 @@ import * as _moment from 'moment';
 import { Album } from '../../models/Album';
 import { AlbumSelectionDialogBoxComponent } from '../album-selection-dialog-box/album-selection-dialog-box.component';
 import { Milestone } from '../../models/Milestones';
+import { AlbumService, DetailParams } from '../../services/api/backend/album.service';
 
 @Component({
   selector: 'app-new-milestones',
@@ -57,16 +58,15 @@ export class NewMilestonesComponent {
     @Inject(MAT_DIALOG_DATA) public data: MilestoneData,
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
-    private milestoneService: MilestoneService
+    private milestoneService: MilestoneService,
+    private albumService: AlbumService
   ){
 
   }
 
   ngOnInit(){
     this.initForm();
-    if(this.data.state === 'new'){
-      this.gmOptions.center = this.data.data.coordinates;
-    }
+    this.gmOptions.center = this.data.data.coordinates;
   }
 
   private initForm(){
@@ -82,17 +82,27 @@ export class NewMilestonesComponent {
       albumId: [null]
     });
     this.newMilestoneGroup.patchValue(this.data.data);
+    if(typeof this.data.data.albumId === 'string'){
+      this.getAlbumDetail(this.data.data.albumId);
+    }
+  }
+
+  private getAlbumDetail(id: string){
+    const detailParams: DetailParams = { id };
+    this.subscription.add(
+      this.albumService.getDetail(detailParams).subscribe(res=>{
+        if(res.status === 200){
+          this.album = res.metaData;
+        }
+      })
+    )
   }
 
   chooseAlbum(){
-    this.newMilestoneGroup.controls['albumId'].setValue('12222333');
     const dialogRef = this.dialog.open(AlbumSelectionDialogBoxComponent);
 
     this.subscription.add(
       dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: `);
-        console.log(result);
-        
         if(result){
           const albumIsSeleted: Album = result;
           this.album = albumIsSeleted;
@@ -109,13 +119,25 @@ export class NewMilestonesComponent {
   }
 
   submit(){
-    console.log('submit is clicked');
-    
+    this.data.state === 'update' ? this.update() : this.create();
+  }
+
+  update(){
     if(this.newMilestoneGroup.valid){
-      console.log(this.newMilestoneGroup.value);
+      this.subscription.add(
+        this.milestoneService.modify(this.data.data._id, this.newMilestoneGroup.value).subscribe(res=>{
+          if(res.status === 200){
+            this.dialogRef.close(res.metaData);
+          }
+        })
+      )
+    }
+  }
+
+  create(){
+    if(this.newMilestoneGroup.valid){
       this.subscription.add(
         this.milestoneService.create(this.newMilestoneGroup.value).subscribe(res=>{
-          console.log('Tạo thành công');
           if(res.status === 201){
             this.dialogRef.close(res.metaData);
           }

@@ -39,7 +39,7 @@ export class MapsComponent {
     center: centerMap,
     zoom: 6
   };
-
+  infoWindowContent: boolean = false;
 
   overlayRef?: OverlayRef;
 
@@ -71,6 +71,11 @@ export class MapsComponent {
     this.milestoneMarker = milestone;
     
     this.infoWindow.open(marker);
+    this.infoWindowContent = true;
+  }
+
+  closeInfoWindow(){
+    this.infoWindowContent = false;
   }
 
   move(event: google.maps.MapMouseEvent) {

@@ -24,9 +24,7 @@ export class CustomInfoWindowComponent {
 
   }
 
-  ngOnChanges(changes: SimpleChange){
-    console.log(this.milestone);
-    
+  ngOnInit(){
     if(this.milestone && this.milestone?.albumId){
       console.log('run this...');
       this.getMistoneDetail(this.milestone._id);
@@ -34,10 +32,6 @@ export class CustomInfoWindowComponent {
       this.album = undefined;
       this.galleryItems = [];
     }
-  }
-
-  ngOnInit(){
-    
   }
 
   getMistoneDetail(mediaId: string){
@@ -76,7 +70,7 @@ export class CustomInfoWindowComponent {
   }
 
   ngOnDestroy(){
-    console.log();
+    console.log('custom info window is destroyed');
     
     this.subscription.unsubscribe()
   }

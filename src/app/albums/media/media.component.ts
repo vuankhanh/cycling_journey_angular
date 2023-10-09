@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Album, Media } from 'src/app/shared/models/Album';
-import { AlbumService } from 'src/app/shared/services/api/backend/album.service';
+import { AlbumService, DetailParams } from 'src/app/shared/services/api/backend/album.service';
 import { Subscription, map, switchMap } from 'rxjs';
 import { GalleryItem } from '@daelmaak/ngx-gallery';
 import { SetBaseUrlPipe } from 'src/app/shared/pipes/set-base-url.pipe';
@@ -26,8 +26,11 @@ export class MediaComponent {
 
   ngOnInit() {
     let albumDetail$ = this.activetedRoute.params.pipe(
-      map(params => params['mediaId']),
-      switchMap(mediaId => this.albumService.getDetail(mediaId))
+      map(params => {
+        const detailParams: DetailParams = {route: params['media-route'] as string};
+        return detailParams
+      }),
+      switchMap(detailParams => this.albumService.getDetail(detailParams))
     );
 
     this.subscription.add(

@@ -14,8 +14,12 @@ export class AlbumService {
   getAll(){
     return this.httpClient.get<AlbumResponse>(this.url);
   }
-  getDetail(mediaId: string){
-    return this.httpClient.get<AlbumDetailRespone>(this.url+'/'+mediaId);
+  getDetail(detailParams: DetailParams){
+    let params = new HttpParams();
+    for(const [k, v] of Object.entries(detailParams)){
+      params = params.append(k, v)
+    }
+    return this.httpClient.get<AlbumDetailRespone>(this.url+'/detail', { params });
   }
   create(name: string, files: Array<Blob>, description: string){
     let params = new HttpParams();
@@ -29,4 +33,9 @@ export class AlbumService {
     formData.append('description', description);
     return this.httpClient.post<AlbumDetailRespone>(this.url, formData, { params });
   }
+}
+
+export interface DetailParams{
+  id?: string,
+  route?: string
 }

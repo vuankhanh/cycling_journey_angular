@@ -24,7 +24,6 @@ export class JourneyComponent {
   private getMilestones(){
     this.subscription.add(
       this.milestoneService.getAll().subscribe(res=>{
-        console.log(res);
         let milestoneRespone: MilestonesResponse = res;
         this.milestones = milestoneRespone.metaData;
       })
@@ -32,16 +31,15 @@ export class JourneyComponent {
   }
 
   listenNewMilestone(newMilestone: Milestone){
-    console.log(newMilestone);
     this.milestones.push(newMilestone)
   }
 
   listenUpdateMilestone(updatedMilestone: Milestone){
-    this.milestones.map(milestone=>{
-      if(milestone._id === updatedMilestone._id){
-        milestone = updatedMilestone
+    for(const i in this.milestones){
+      if(this.milestones[i]._id === updatedMilestone._id){
+        this.milestones[i] = updatedMilestone;
       }
-    })
+    }
   }
 
   ngOnDestroy(){

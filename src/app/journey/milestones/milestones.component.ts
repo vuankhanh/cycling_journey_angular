@@ -36,7 +36,6 @@ export class MilestonesComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
       if(result){
         const milestoneIsUpdated: Milestone = result;
         this.updateMilestone.emit(milestoneIsUpdated);
