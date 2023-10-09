@@ -36,6 +36,14 @@ export class JourneyComponent {
     this.milestones.push(newMilestone)
   }
 
+  listenUpdateMilestone(updatedMilestone: Milestone){
+    this.milestones.map(milestone=>{
+      if(milestone._id === updatedMilestone._id){
+        milestone = updatedMilestone
+      }
+    })
+  }
+
   ngOnDestroy(){
     this.subscription.unsubscribe();
   }

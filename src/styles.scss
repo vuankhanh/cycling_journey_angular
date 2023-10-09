@@ -38,3 +38,8 @@ $cycling_journey_angular-theme: mat.define-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+div[matListItemTitle]{
+  font-weight: bold;
+  font-size: 14px;
+}

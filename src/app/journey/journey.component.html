@@ -1,4 +1,4 @@
 <div fxLayout="row" fxFlex>
     <app-maps [milestones]="milestones" (newMilestone)="listenNewMilestone($event)" fxFlex="100"></app-maps>
-    <app-milestones [milestones]="milestones"></app-milestones>
+    <app-milestones [milestones]="milestones" (updateMilestone)="listenUpdateMilestone($event)"></app-milestones>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChange } from '@angular/core';
 import { Milestone } from '../../models/Milestones';
 import { GalleryItem } from '@daelmaak/ngx-gallery';
 import { Album, Media } from '../../models/Album';
@@ -13,7 +13,8 @@ import { MilestoneService } from '../../services/api/backend/milestone.service';
 })
 export class CustomInfoWindowComponent {
   @Input() milestone?: Milestone = undefined;
-  @Input() galleryItems: GalleryItem[] = [];
+  album?: Album = undefined;
+  galleryItems: GalleryItem[] = [];
 
   subscription: Subscription = new Subscription();
   constructor(
@@ -23,12 +24,20 @@ export class CustomInfoWindowComponent {
 
   }
 
-
+  ngOnChanges(changes: SimpleChange){
+    console.log(this.milestone);
+    
+    if(this.milestone && this.milestone?.albumId){
+      console.log('run this...');
+      this.getMistoneDetail(this.milestone._id);
+    }else{
+      this.album = undefined;
+      this.galleryItems = [];
+    }
+  }
 
   ngOnInit(){
-    if(this.milestone && this.milestone._id){
-      this.getMistoneDetail(this.milestone._id);
-    }
+    
   }
 
   getMistoneDetail(mediaId: string){
@@ -38,10 +47,11 @@ export class CustomInfoWindowComponent {
         
         const metaData: Milestone = res.metaData;
         console.log(metaData);
-        
-        const album: Album = metaData.albumId as Album;
-        this.initImages(album.media)
-        console.log(metaData);
+        if(metaData.albumId){
+          const album: Album = metaData.albumId as Album;
+          this.album = album;
+          this.initImages(album.media)
+        }
       })
     )
   }
@@ -66,6 +76,8 @@ export class CustomInfoWindowComponent {
   }
 
   ngOnDestroy(){
+    console.log();
+    
     this.subscription.unsubscribe()
   }
 }

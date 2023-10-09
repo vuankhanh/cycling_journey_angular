@@ -38,7 +38,7 @@
     </div>
 
     <google-map #googleMap [options]="gmOptions">
-      <map-marker [position]="coordinatesIsSeleted" [options]="markerOptions" (mapDragend)="markerDraggend($event)">
+      <map-marker [position]="data.data.coordinates" [options]="markerOptions" (mapDragend)="markerDraggend($event)">
       </map-marker>
     </google-map>
     <div>

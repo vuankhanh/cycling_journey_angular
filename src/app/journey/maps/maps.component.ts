@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, ViewCon
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
-import { NewMilestonesComponent } from '../../shared/components/new-milestones/new-milestones.component';
+import { MilestoneData, NewMilestonesComponent } from '../../shared/components/new-milestones/new-milestones.component';
 import { Milestone } from 'src/app/shared/models/Milestones';
 import { Subscription } from 'rxjs';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
@@ -40,6 +40,7 @@ export class MapsComponent {
     zoom: 6
   };
 
+
   overlayRef?: OverlayRef;
 
   constructor(
@@ -52,11 +53,6 @@ export class MapsComponent {
   }
 
   ngOnInit() {
-  }
-
-  mapLeftMouseClick(event: google.maps.MapMouseEvent) {
-    console.log(event);
-    console.log(event.latLng?.toUrlValue());
   }
 
   mapRightMouseClick(event: google.maps.MapMouseEvent) {
@@ -111,9 +107,16 @@ export class MapsComponent {
   }
 
   addNewStone(coordinates: google.maps.LatLng){
+    const milestone = {
+      coordinates
+    }
+    const milestoneData: MilestoneData = {
+      state: 'new',
+      data: milestone as Milestone
+    }
     this.closeFusilliPanel();
     const dialogRef = this.dialog.open(NewMilestonesComponent, {
-      data: coordinates,
+      data: milestoneData,
       disableClose: true
     });
 

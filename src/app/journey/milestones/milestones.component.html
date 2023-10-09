@@ -1,9 +1,9 @@
 <mat-list>
-    <div mat-subheader>Folders</div>
-    <mat-list-item *ngFor="let folder of milestones">
-      <mat-icon matListItemIcon>folder</mat-icon>
-      <div matListItemTitle>{{folder.name}}</div>
-      <div matListItemLine>{{folder.createdAt | date}}</div>
+    <div mat-subheader>Các cột mốc</div>
+    <mat-list-item *ngFor="let milestone of milestones" (click)="update(milestone)">
+      <mat-icon matListItemIcon>emoji_flags</mat-icon>
+      <div matListItemTitle>{{milestone.name}}</div>
+      <div matListItemLine>{{milestone.createdAt | date: 'dd/MM/yyyy'}}</div>
     </mat-list-item>
     <mat-divider></mat-divider>
     <div mat-subheader>Notes</div>

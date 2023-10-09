@@ -1,4 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { MilestoneData, NewMilestonesComponent } from 'src/app/shared/components/new-milestones/new-milestones.component';
 import { Milestone } from 'src/app/shared/models/Milestones';
 
 
@@ -9,8 +12,12 @@ import { Milestone } from 'src/app/shared/models/Milestones';
 })
 export class MilestonesComponent {
   @Input() milestones: Array<Milestone> = [];
+
+  @Output() updateMilestone = new EventEmitter<Milestone>();
+
+  subscription: Subscription = new Subscription();
   constructor(
-    
+    private dialog: MatDialog
   ){
 
   }
@@ -18,6 +25,26 @@ export class MilestonesComponent {
     
   }
 
+  update(milestone: Milestone){
+    const milestoneData: MilestoneData = {
+      state: 'update',
+      data: milestone
+    }
+    const dialogRef = this.dialog.open(NewMilestonesComponent, {
+      data: milestoneData,
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      if(result){
+        const milestoneIsUpdated: Milestone = result;
+        this.updateMilestone.emit(milestoneIsUpdated);
+      }
+    });
+  }
+
   ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 }

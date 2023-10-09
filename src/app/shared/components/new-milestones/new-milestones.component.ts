@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '../../modules/material';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { InputOnlyNumberDirective } from '../../directives/only-number-input.directive';
 
@@ -15,19 +13,7 @@ import { Subscription } from 'rxjs';
 import * as _moment from 'moment';
 import { Album } from '../../models/Album';
 import { AlbumSelectionDialogBoxComponent } from '../album-selection-dialog-box/album-selection-dialog-box.component';
-
-export const MY_FORMATS = {
-  location: 'vi',
-  parse: {
-    dateInput: 'L',
-  },
-  display: {
-    dateInput: 'L',
-    monthYearLabel: 'L',
-    dateA11yLabel: 'L',
-    monthYearA11yLabel: 'L',
-  },
-};
+import { Milestone } from '../../models/Milestones';
 
 @Component({
   selector: 'app-new-milestones',
@@ -44,18 +30,6 @@ export const MY_FORMATS = {
     FlexLayoutModule,
     MaterialModule,
     
-  ],
-  providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [ MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS ],
-    },
-    { provide: MAT_DATE_LOCALE, useValue: 'vi-VI' },
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ]
 })
 export class NewMilestonesComponent {
@@ -80,7 +54,7 @@ export class NewMilestonesComponent {
 
   constructor(
     public dialogRef: MatDialogRef<NewMilestonesComponent>,
-    @Inject(MAT_DIALOG_DATA) public coordinatesIsSeleted: google.maps.LatLng,
+    @Inject(MAT_DIALOG_DATA) public data: MilestoneData,
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService
@@ -90,8 +64,9 @@ export class NewMilestonesComponent {
 
   ngOnInit(){
     this.initForm();
-    console.log(this.coordinatesIsSeleted);
-    this.gmOptions.center = this.coordinatesIsSeleted;
+    if(this.data.state === 'new'){
+      this.gmOptions.center = this.data.data.coordinates;
+    }
   }
 
   private initForm(){
@@ -101,11 +76,12 @@ export class NewMilestonesComponent {
       address: ['', Validators.required],
       dateTime: ['', Validators.required],
       coordinates: this.formBuilder.group({
-        lat: [this.coordinatesIsSeleted.lat(), Validators.required],
-        lng: [this.coordinatesIsSeleted.lng(), Validators.required],
+        lat: ['', Validators.required],
+        lng: ['', Validators.required],
       }),
       albumId: [null]
-    })
+    });
+    this.newMilestoneGroup.patchValue(this.data.data);
   }
 
   chooseAlbum(){
@@ -151,4 +127,9 @@ export class NewMilestonesComponent {
   ngOnDestroy(){
     this.subscription.unsubscribe();
   }
+}
+
+export interface MilestoneData{
+  state: 'new' | 'update',
+  data: Milestone
 }
