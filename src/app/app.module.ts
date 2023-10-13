@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MaterialModule } from './shared/modules/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { ToastrModule } from 'ngx-toastr';
+import { ShowToastInterceptor } from './shared/core/interceptors/show-toast.interceptor';
+
 
 export const MY_FORMATS = {
   location: 'vi',
@@ -32,7 +34,7 @@ export const MY_FORMATS = {
     BrowserAnimationsModule,
     AppRoutingModule,
 
-    MaterialModule
+    ToastrModule.forRoot(),
   ],
   providers: [
     {
@@ -42,6 +44,7 @@ export const MY_FORMATS = {
     },
     { provide: MAT_DATE_LOCALE, useValue: 'vi-VI' },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: HTTP_INTERCEPTORS, useClass: ShowToastInterceptor, multi: true },
   
   ],
   bootstrap: [AppComponent]

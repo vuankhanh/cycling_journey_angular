@@ -6,21 +6,22 @@ import { PortalModule } from '@angular/cdk/portal';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MapsRoutingModule } from './journey-routing.module';
-import { MaterialModule } from '../shared/modules/material';
+import { MaterialModule } from '../../shared/modules/material';
 
 import { JourneyComponent } from './journey.component';
 import { MapsComponent } from './maps/maps.component';
-import { NewMilestonesComponent } from '../shared/components/new-milestones/new-milestones.component';
+import { NewMilestonesComponent } from '../../shared/components/new-milestones/new-milestones.component';
 import { MilestonesComponent } from './milestones/milestones.component';
-import { CustomInfoWindowComponent } from '../shared/components/custom-info-window/custom-info-window.component';
+import { CustomInfoWindowComponent } from '../../shared/components/custom-info-window/custom-info-window.component';
 
 //directives
-import { DisableDefaultRightMouseClickDirective } from '../shared/directives/disable-default-right-mouse-click.directive';
+import { DisableDefaultRightMouseClickDirective } from '../../shared/directives/disable-default-right-mouse-click.directive';
 
 //pipes
-import { SharingPipesModule } from '../shared/pipes/sharing-pipes.module';
-import { SetBaseUrlPipe } from '../shared/pipes/set-base-url.pipe';
+import { SharingPipesModule } from '../../shared/pipes/sharing-pipes.module';
+import { SetBaseUrlPipe } from '../../shared/pipes/set-base-url.pipe';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
+import { CustomInfoWindowModule } from 'src/app/shared/components/custom-info-window/custom-info-window.module';
 
 
 @NgModule({
@@ -29,7 +30,6 @@ import { GalleryComponent } from '@daelmaak/ngx-gallery';
     JourneyComponent,
     MapsComponent,
     MilestonesComponent,
-    CustomInfoWindowComponent,
 
     //directives
     DisableDefaultRightMouseClickDirective,
@@ -47,6 +47,8 @@ import { GalleryComponent } from '@daelmaak/ngx-gallery';
 
     GalleryComponent,
 
+    CustomInfoWindowModule,
+    
     //stand alone component
     NewMilestonesComponent,
 

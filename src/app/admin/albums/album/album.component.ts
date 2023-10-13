@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { UploadComponent } from 'src/app/shared/components/upload/upload.component';
+import { AlbumData, UploadComponent } from 'src/app/shared/components/upload/upload.component';
 import { Album } from 'src/app/shared/models/Album';
 import { AlbumService } from 'src/app/shared/services/api/backend/album.service';
 
@@ -36,7 +36,14 @@ export class AlbumComponent {
   }
 
   openUploadDialog(){
-    const dialogRef = this.dialog.open(UploadComponent);
+    const milestoneData: AlbumData = {
+      state: 'new',
+      data: null
+    }
+    const dialogRef = this.dialog.open(UploadComponent, {
+      data: milestoneData,
+      disableClose: true
+    });
 
     this.subscription.add(
       dialogRef.afterClosed().subscribe(result => {

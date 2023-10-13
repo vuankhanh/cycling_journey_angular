@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { Component,Inject } from '@angular/core';
 import { MaterialModule } from '../../modules/material';
 import { DragDropDirective, FileHandle } from '../../directives/drag-drop.directive';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AlbumService } from '../../services/api/backend/album.service';
 import { Subscription } from 'rxjs';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SharingPipesModule } from '../../pipes/sharing-pipes.module';
+import { Album, Media } from '../../models/Album';
 
 @Component({
   selector: 'app-upload',
@@ -26,11 +27,13 @@ import { SharingPipesModule } from '../../pipes/sharing-pipes.module';
 })
 export class UploadComponent {
   files: FileHandle[] = [];
+  filesToBeDeleted: Array<string> = [];
   fileGroup!: FormGroup;
   
   subscription: Subscription = new Subscription();
   constructor(
     public dialogRef: MatDialogRef<UploadComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: AlbumData,
     private formBuilder: FormBuilder,
     private albumService: AlbumService
   ){
@@ -38,6 +41,8 @@ export class UploadComponent {
   }
 
   ngOnInit(){
+    console.log(this.data);
+    
     this.initForm();
   }
 
@@ -45,8 +50,11 @@ export class UploadComponent {
     this.fileGroup = this.formBuilder.group({
       name: ['', Validators.required],
       description: [''],
-      files: [[], Validators.required]
-    })
+      media: [[]],
+    });
+    if(this.data.data){
+      this.fileGroup.patchValue(this.data.data);
+    }
   }
 
   filesDropped(files: FileHandle[]): void {
@@ -55,19 +63,54 @@ export class UploadComponent {
     for(const [index, file] of this.files.entries()){
       blobFiles.push(file.file)
     }
-    
-    console.log(this.files);
-    this.fileGroup.controls['files'].setValue(blobFiles);
+  }
+
+  removePreparingFile(i: number){
+    this.files.slice(i, 1);
+  }
+
+  markOrUnmarkFileWillRemove(file: Media){
+    file.willRemove = !file.willRemove;
+  }
+
+  get mediaControl(): FormArray{
+    return this.fileGroup.controls['media'] as FormArray;
+  }
+
+  get arrFileWillRemove(): Array<string>{
+    const media: Array<Media> = this.mediaControl.value;
+    return media.filter(m=>{
+      return m.willRemove ? m._id : false;
+    }).map(m=>m._id);
   }
 
   submit(){
+    this.data.state === 'update' ? this.update() : this.create();
+  }
+
+  create(){
     if(this.fileGroup.valid){
       const name: string = this.fileGroup.value.name;
-      const blobFiles: Array<Blob> = this.fileGroup.value.files;
+      const blobFiles: Array<Blob> = this.files.map(file=>file.file);
       const description: string = this.fileGroup.value.description;
       this.subscription.add(
-        this.albumService.create(name, blobFiles, description).subscribe(res=>{
-          console.log(res);
+        this.albumService.create(name, description, blobFiles).subscribe(res=>{
+          this.dialogRef.close(res.metaData)
+        })
+      )
+    }
+  }
+  
+  update(){
+    if(this.fileGroup.valid){
+      const id: string = this.data.data!._id;
+      const name: string = this.fileGroup.value.name;
+      const blobFiles: Array<Blob> = this.files.map(file=>file.file);
+      const description: string = this.fileGroup.value.description;
+      const filesWillRemove = this.arrFileWillRemove;
+      
+      this.subscription.add(
+        this.albumService.modify(id, name, description, blobFiles, filesWillRemove).subscribe(res=>{
           this.dialogRef.close(res.metaData)
         })
       )
@@ -77,4 +120,8 @@ export class UploadComponent {
   ngOnDestroy(){
     this.subscription.unsubscribe()
   }
+}
+export interface AlbumData{
+  state: 'new' | 'update',
+  data: Album | null
 }

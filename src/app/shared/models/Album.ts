@@ -22,6 +22,7 @@ export interface Media {
     caption: string,
     alternateName: string,
     type: 'image' | 'video',
+    willRemove?: boolean,
     created: Date,
     updated: Date,
 }

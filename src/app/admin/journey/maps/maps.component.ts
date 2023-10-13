@@ -2,13 +2,11 @@ import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, ViewCon
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
-import { MilestoneData, NewMilestonesComponent } from '../../shared/components/new-milestones/new-milestones.component';
+import { MilestoneData, NewMilestonesComponent } from '../../../shared/components/new-milestones/new-milestones.component';
 import { Milestone } from 'src/app/shared/models/Milestones';
 import { Subscription } from 'rxjs';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { GalleryItem } from '@daelmaak/ngx-gallery';
-import { Media } from 'src/app/shared/models/Album';
-import { SetBaseUrlPipe } from 'src/app/shared/pipes/set-base-url.pipe';
 
 const centerMap: google.maps.LatLngLiteral = {
   lat: 16.48933704291298,
@@ -39,6 +37,16 @@ export class MapsComponent {
     center: centerMap,
     zoom: 6
   };
+
+  imgMkIcon = {
+    url: '/assets/imgs/png/marker.png',
+    size: new google.maps.Size(25, 37),
+    scaledSize: new google.maps.Size(25, 37)
+  }
+  mkOptions: google.maps.MarkerOptions = {
+    icon: this.imgMkIcon
+  }
+
   infoWindowContent: boolean = false;
 
   overlayRef?: OverlayRef;
@@ -46,8 +54,7 @@ export class MapsComponent {
   constructor(
     public overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private dialog: MatDialog,
-    private setBaseUrlPipe: SetBaseUrlPipe
+    private dialog: MatDialog
   ) {
 
   }

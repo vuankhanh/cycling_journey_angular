@@ -31,6 +31,9 @@ mat-dialog-content{
         mat-list{
             mat-list-item{
                 height: fit-content;
+                img{
+                    object-fit: cover;
+                }
             }
         }
     }

@@ -5,6 +5,8 @@ import { AlbumService, DetailParams } from 'src/app/shared/services/api/backend/
 import { Subscription, map, switchMap } from 'rxjs';
 import { GalleryItem } from '@daelmaak/ngx-gallery';
 import { SetBaseUrlPipe } from 'src/app/shared/pipes/set-base-url.pipe';
+import { AlbumData, UploadComponent } from 'src/app/shared/components/upload/upload.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-media',
@@ -18,6 +20,7 @@ export class MediaComponent {
   private subscription: Subscription = new Subscription();
   constructor(
     private activetedRoute: ActivatedRoute,
+    private dialog: MatDialog,
     private albumService: AlbumService,
     private setBaseUrlPipe: SetBaseUrlPipe
   ) {
@@ -35,21 +38,18 @@ export class MediaComponent {
 
     this.subscription.add(
       albumDetail$.subscribe(res => {
-        console.log(res);
-
         const metaData: Album = res.metaData;
         this.albumDetail = metaData;
         console.log(this.albumDetail);
-
+        
         this.initImages(this.albumDetail.media)
-        console.log(this.albumDetail);
-
       })
     )
   }
 
   private initImages(medias: Array<Media>) {
     console.log(medias);
+    this.galleryItems = [];
 
     for (let [index, media] of medias.entries()) {
       const src = this.setBaseUrlPipe.transform(media.url);
@@ -63,6 +63,31 @@ export class MediaComponent {
       }
       this.galleryItems.push(galleryItem)
     }
+  }
+
+  update(album: Album){
+    const milestoneData: AlbumData = {
+      state: 'update',
+      data: album
+    }
+    const dialogRef = this.dialog.open(UploadComponent, {
+      data: milestoneData,
+      disableClose: true
+    });
+
+    this.subscription.add(
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          console.log(result);
+          
+          const albumIsUpdated: Album = result;
+          this.albumDetail = albumIsUpdated;
+          this.initImages(this.albumDetail.media);
+          console.log(albumIsUpdated);
+          
+        }
+      })
+    )
   }
 
   ngOnDestroy() {

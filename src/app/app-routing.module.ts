@@ -3,16 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'journey',
-    loadChildren: ()=> import('./journey/journey.module').then(m=>m.JourneyModule)
-  },
-  {
-    path: 'albums',
-    loadChildren: ()=> import('./albums/albums.module').then(m=>m.AlbumModule)
+    path: 'admin',
+    loadChildren: ()=> import('./admin/admin.module').then(m=>m.AdminModule)
   },
   {
     path: '',
-    redirectTo: 'journey',
+    loadChildren: ()=> import('./present/present.module').then(m=>m.PresentModule)
+  },
+  {
+    path: '',
+    redirectTo: '',
     pathMatch: 'full'
   }
 ];

@@ -1,4 +1,4 @@
-<h2 mat-dialog-title align="center">Tải file lên Server</h2>
+<h2 mat-dialog-title align="center">{{ data.state === 'new' ? 'Tải file lên Server' : 'Cập nhật album' }}</h2>
 <mat-dialog-content class="mat-typography">
     <form [formGroup]="fileGroup" fxLayout="column" fxLayoutGap="2px">
         <mat-form-field appearance="outline">
@@ -25,21 +25,48 @@
                 <div class="centered">Drop your file here!</div>
             </div>
         </div>
+        
         <!--droped image preview-->
         <mat-list>
-            <mat-list-item *ngFor="let file of files">
-                <img matListItemMeta *ngIf="file" [src]="file.url" width="100px" height="100px">
-                <button matListItemMeta mat-button type="button">asdsad</button>
-                <div matListItemTitle>{{file.file.name}}</div>
-                <div matListItemLine>{{file.file.size | formatFileSize:false}}</div>
-            </mat-list-item>
+            <ng-container *ngIf="files.length">
+                <div mat-subheader>File mới upload</div>
+                <mat-list-item *ngFor="let file of files; let index = index;">
+                    <div matListItemTitle>{{file.file.name}}</div>
+                    <div matListItemLine>{{file.file.size | formatFileSize:false}}</div>
+                    <img matListItemMeta *ngIf="file" [src]="file.url" width="100px" height="100px">
+                    <div matListItemMeta>
+                        <button mat-icon-button type="button" (click)="removePreparingFile(index)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </mat-list-item>
+            </ng-container>
+
+            <ng-container *ngIf="fileGroup.controls['media'].value.length>0">
+                <div mat-subheader>File đã tồn tại trên server</div>
+                <ng-container *ngIf="fileGroup.controls['media'].value as media">
+                    <mat-list-item *ngFor="let file of media" [ngStyle]="{ 'opacity' : !file.willRemove ? 1 : .25 }">
+                        <div matListItemTitle>{{file.name}}</div>
+                        <div matListItemLine>{{file.createdAt | date: 'dd/MM/yyyy'}}</div>
+                        <div matListItemLine>{{file.type}}</div>
+                        <img matListItemMeta *ngIf="file" [src]="file.thumbnailUrl | baseUrl" width="100px" height="100px">
+                        <div matListItemMeta>
+                            <button mat-icon-button type="button" (click)="markOrUnmarkFileWillRemove(file)">
+                                <mat-icon>{{ file.willRemove ? 'restore' : 'delete'}}</mat-icon>
+                            </button>
+                        </div>
+                    </mat-list-item>
+                </ng-container>
+            </ng-container>
         </mat-list>
 
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Hủy</button>
-    <button mat-button type="submit" [disabled]="fileGroup.invalid" (click)="submit()">Tải lên</button>
+    <button mat-button type="submit" [disabled]="fileGroup.invalid" (click)="submit()">
+        {{ data.state === 'new' ? 'Tải lên' : 'Cập nhật' }}
+    </button>
 </mat-dialog-actions>
 
 

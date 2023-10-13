@@ -26,7 +26,6 @@ export class CustomInfoWindowComponent {
 
   ngOnInit(){
     if(this.milestone && this.milestone?.albumId){
-      console.log('run this...');
       this.getMistoneDetail(this.milestone._id);
     }else{
       this.album = undefined;
@@ -37,10 +36,7 @@ export class CustomInfoWindowComponent {
   getMistoneDetail(mediaId: string){
     this.subscription.add(
       this.milestoneService.getDetail(mediaId).subscribe(res=>{
-        console.log(res);
-        
         const metaData: Milestone = res.metaData;
-        console.log(metaData);
         if(metaData.albumId){
           const album: Album = metaData.albumId as Album;
           this.album = album;
@@ -51,8 +47,6 @@ export class CustomInfoWindowComponent {
   }
 
   private initImages(medias: Array<Media>) {
-    console.log(medias);
-
     for (let [index, media] of medias.entries()) {
       const src = this.setBaseUrlPipe.transform(media.url);
       const thumbSrc = this.setBaseUrlPipe.transform(media.thumbnailUrl);
@@ -64,14 +58,10 @@ export class CustomInfoWindowComponent {
         video: media.type === 'video' ? true : false
       }
       this.galleryItems.push(galleryItem);
-      console.log(this.galleryItems);
-      
     }
   }
 
   ngOnDestroy(){
-    console.log('custom info window is destroyed');
-    
     this.subscription.unsubscribe()
   }
 }

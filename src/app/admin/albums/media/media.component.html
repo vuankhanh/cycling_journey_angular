@@ -1,0 +1,15 @@
+<ng-container *ngIf="galleryItems.length && albumDetail">
+    <div class="container">
+        <mat-list-item>
+            <mat-icon matListItemIcon>photo_library</mat-icon>
+            <div matListItemTitle>{{albumDetail.name}}</div>
+            <div matListItemLine>{{albumDetail.createdAt | date: 'dd/MM/yyyy'}}</div>
+            <div matListItemMeta (click)="update(albumDetail)">
+                <button mat-icon-button >
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+        </mat-list-item>
+        <gallery [items]="galleryItems"></gallery>
+    </div>
+</ng-container>

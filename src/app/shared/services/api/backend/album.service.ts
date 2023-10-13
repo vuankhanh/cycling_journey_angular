@@ -21,7 +21,7 @@ export class AlbumService {
     }
     return this.httpClient.get<AlbumDetailRespone>(this.url+'/detail', { params });
   }
-  create(name: string, files: Array<Blob>, description: string){
+  create(name: string, description: string, files: Array<Blob>){
     let params = new HttpParams();
     params = params.append('name', name)
     const formData = new FormData();
@@ -32,6 +32,18 @@ export class AlbumService {
     }
     formData.append('description', description);
     return this.httpClient.post<AlbumDetailRespone>(this.url, formData, { params });
+  }
+  modify(id: string, name: string, description: string, files: Array<Blob>, filesWillRemove: Array<string>){
+    const formData = new FormData();
+    if(files.length){
+      for(let [index, file] of files.entries()){
+        formData.append('many-files', file);
+      }
+    }
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('filesWillRemove', JSON.stringify(filesWillRemove));
+    return this.httpClient.patch<AlbumDetailRespone>(this.url+'/'+id, formData);
   }
 }
 
