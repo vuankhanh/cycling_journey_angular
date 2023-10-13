@@ -120,7 +120,10 @@ export class MapsComponent {
 
   addNewStone(coordinates: google.maps.LatLng){
     const milestone = {
-      coordinates
+      coordinates: {
+        lat: coordinates.lat(),
+        lng: coordinates.lng()
+      }
     }
     const milestoneData: MilestoneData = {
       state: 'new',

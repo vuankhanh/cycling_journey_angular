@@ -11,6 +11,8 @@ import { Milestone, MilestonesResponse } from '../shared/models/Milestones';
 export class PresentComponent {
   milestones: Array<Milestone> = [];
 
+  milestoneItemClicked?: Milestone;
+
   subscription: Subscription = new Subscription()
   constructor(
     private milestoneService: MilestoneService
@@ -28,6 +30,10 @@ export class PresentComponent {
         this.milestones = milestoneRespone.metaData;
       })
     )
+  }
+
+  listenItemClick(milestone: Milestone){
+    this.milestoneItemClicked = milestone;
   }
 
   ngOnDestroy(){

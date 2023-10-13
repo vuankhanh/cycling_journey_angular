@@ -1,6 +1,6 @@
 <ng-container *ngIf="milestone">
     <ng-container *ngIf="galleryItems.length">
-        <gallery [items]="galleryItems"></gallery>
+        <gallery [objectFit]="'contain'" [items]="galleryItems"></gallery>
     </ng-container>
     <mat-list-item>
         <div matListItemTitle>{{milestone.name}}</div>

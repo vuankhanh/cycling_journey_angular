@@ -81,6 +81,7 @@ export class NewMilestonesComponent {
       }),
       albumId: [null]
     });
+
     this.newMilestoneGroup.patchValue(this.data.data);
     if(typeof this.data.data.albumId === 'string'){
       this.getAlbumDetail(this.data.data.albumId);
@@ -136,6 +137,7 @@ export class NewMilestonesComponent {
 
   create(){
     if(this.newMilestoneGroup.valid){
+      console.log(this.newMilestoneGroup.value);
       this.subscription.add(
         this.milestoneService.create(this.newMilestoneGroup.value).subscribe(res=>{
           if(res.status === 201){

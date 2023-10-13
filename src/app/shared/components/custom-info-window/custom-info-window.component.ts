@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChange } from '@angular/core';
+import { Component, Input, SimpleChange, SimpleChanges } from '@angular/core';
 import { Milestone } from '../../models/Milestones';
 import { GalleryItem } from '@daelmaak/ngx-gallery';
 import { Album, Media } from '../../models/Album';
@@ -24,18 +24,25 @@ export class CustomInfoWindowComponent {
 
   }
 
-  ngOnInit(){
-    if(this.milestone && this.milestone?.albumId){
-      this.getMistoneDetail(this.milestone._id);
-    }else{
-      this.album = undefined;
+  ngOnChanges(changes: SimpleChanges){
+    if(changes['milestone']){
+      const milestone: Milestone = changes['milestone'].currentValue;
       this.galleryItems = [];
+      if(milestone && milestone.albumId){
+        this.getMistoneDetail(milestone._id);
+      }else{
+        this.album = undefined;
+      }
     }
   }
 
-  getMistoneDetail(mediaId: string){
+  ngOnInit(){
+    
+  }
+
+  getMistoneDetail(id: string){
     this.subscription.add(
-      this.milestoneService.getDetail(mediaId).subscribe(res=>{
+      this.milestoneService.getDetail(id).subscribe(res=>{
         const metaData: Milestone = res.metaData;
         if(metaData.albumId){
           const album: Album = metaData.albumId as Album;

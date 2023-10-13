@@ -27,6 +27,10 @@ export interface Media {
     updated: Date,
 }
 
+export interface PresenAlbum extends Album{
+
+}
+
 export interface AlbumResponse extends Success{
     metaData: {
         data: Array<Album>,

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Milestone } from 'src/app/shared/models/Milestones';
 
 @Component({
@@ -8,9 +8,8 @@ import { Milestone } from 'src/app/shared/models/Milestones';
 })
 export class MilestonesComponent {
   @Input() milestones: Array<Milestone> = [];
-
+  @Output() itemClickEmit: EventEmitter<Milestone> = new EventEmitter<Milestone>();
   openWindowMarker(milestone: Milestone){
-    console.log(milestone);
-    
+    this.itemClickEmit.emit(milestone);
   }
 }

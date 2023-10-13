@@ -1,4 +1,4 @@
 <div fxLayout="row" fxFlex>
-    <present-map fxFlex="100" [milestones]="milestones"></present-map>
-    <present-milestones [milestones]="milestones"></present-milestones>
+    <present-map fxFlex="100" [milestones]="milestones" [milestoneItemClicked]="milestoneItemClicked"></present-map>
+    <present-milestones [milestones]="milestones" (itemClickEmit)="listenItemClick($event)"></present-milestones>
 </div>
