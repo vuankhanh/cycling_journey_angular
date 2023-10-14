@@ -27,7 +27,7 @@ export class PresentComponent {
     this.subscription.add(
       this.milestoneService.getAll().subscribe(res=>{
         let milestoneRespone: MilestonesResponse = res;
-        this.milestones = milestoneRespone.metaData;
+        this.milestones = milestoneRespone.metaData.sort((a, b)=>a.numericalOrder-b.numericalOrder);
       })
     )
   }
