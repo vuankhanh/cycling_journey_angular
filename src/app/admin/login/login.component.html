@@ -1,0 +1,17 @@
+<div fxLayout="column" class="container">
+    <h1>Đăng nhập</h1>
+    <form fxLayout="column" fxLayoutGap="2px" [formGroup]="loginForm" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline">
+            <mat-label>Tên người dùng(bắt buộc)</mat-label>
+            <input matInput placeholder="Nhập tên người dùng" formControlName="username">
+            <mat-error>Hãy nhập tên người dùng hợp lệ</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Mật khẩu</mat-label>
+            <input matInput placeholder="Nhập mật khẩu" type="password" formControlName="password">
+            <mat-error>Hãy nhập mật khẩu hợp lệ</mat-error>
+        </mat-form-field>
+        <div fxLayout="column" fxFlex="15px"></div>
+        <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Đăng nhập</button>
+    </form>
+</div>

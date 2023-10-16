@@ -9,6 +9,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
 import { ShowToastInterceptor } from './shared/core/interceptors/show-toast.interceptor';
+import { AuthInterceptor } from './shared/core/interceptors/auth.interceptor';
 
 
 export const MY_FORMATS = {
@@ -34,7 +35,9 @@ export const MY_FORMATS = {
     BrowserAnimationsModule,
     AppRoutingModule,
 
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      preventDuplicates: true
+    }),
   ],
   providers: [
     {
@@ -45,6 +48,7 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_LOCALE, useValue: 'vi-VI' },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: ShowToastInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   
   ],
   bootstrap: [AppComponent]

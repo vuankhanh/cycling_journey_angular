@@ -168,7 +168,7 @@ export class MapComponent {
       timed(200)
     );
     
-    this.initPolyline();
+    // this.initPolyline();
     // this.listenMarkerElementChange(milestones);
 
   }

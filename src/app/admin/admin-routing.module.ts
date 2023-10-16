@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
+import { LoginComponent } from './login/login.component';
+import { permissionGuard } from '../shared/core/guard/permission.guard';
 
 const routes: Routes = [
   {
@@ -9,10 +11,15 @@ const routes: Routes = [
     children: [
       {
         path: 'journey',
-        loadChildren: ()=> import('./journey/journey.module').then(m=>m.JourneyModule)
+        loadChildren: ()=> import('./journey/journey.module').then(m=>m.JourneyModule),
+        canActivate: [permissionGuard]
       }, {
         path: 'album',
-        loadChildren: ()=> import('./albums/albums.module').then(m=>m.AlbumModule)
+        loadChildren: ()=> import('./albums/albums.module').then(m=>m.AlbumModule),
+        canActivate: [permissionGuard]
+      }, {
+        path: 'login',
+        component: LoginComponent
       }, {
         path: '',
         redirectTo: 'journey',

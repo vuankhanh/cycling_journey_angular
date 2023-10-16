@@ -22,8 +22,10 @@ export class ShowToastInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       tap({
         // Operation failed; error is an HttpErrorResponse
-        error: (error) => {
-          this.toastrService.error(error.message, 'Error');
+        error: (error: HttpErrorResponse) => {
+          const errorMessage = `- code: ${error.error.status}
+          - message: ${error.error.message}`
+          this.toastrService.error(errorMessage, 'Error');
         }
       })
     );
