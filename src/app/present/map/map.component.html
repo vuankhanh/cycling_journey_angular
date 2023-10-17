@@ -9,4 +9,8 @@
   </map-info-window>
   <map-polyline #poliline [options]="mpOptions"></map-polyline>
   <map-marker #mainMarker="mapMarker" [options]="sMkOptions"></map-marker>
+
+  <button #menuButton (click)="openMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
 </google-map>

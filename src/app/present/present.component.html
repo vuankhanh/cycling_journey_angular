@@ -1,4 +1,15 @@
-<div fxLayout="row" fxFlex>
-    <present-map fxFlex="100" [milestones]="milestones" [milestoneItemClicked]="milestoneItemClicked"></present-map>
-    <present-milestones [milestones]="milestones" (itemClickEmit)="listenItemClick($event)"></present-milestones>
-</div>
+<mat-sidenav-container class="example-sidenav-container" [hasBackdrop]="!(breakpointDetection$ | async)">
+    <mat-sidenav
+        #snav
+        [mode]="(breakpointDetection$ | async) ? 'over' : 'side'"
+        [fixedInViewport]="true"
+        position="end"
+        [disableClose]="(breakpointDetection$ | async)"
+    >
+        <present-milestones [milestones]="milestones" (itemClickEmit)="listenItemClick($event)"></present-milestones>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <present-map fxFlex="100" [milestones]="milestones" [milestoneItemClicked]="milestoneItemClicked" (menuToggleEmit)="toggle()"></present-map>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,8 +1,10 @@
-import { Component, Input, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { GoogleMap, MapInfoWindow, MapMarker, MapPolyline } from '@angular/google-maps';
-import { Observable, Subscription, concatMap, filter, from, map, of, scan, switchMap, tap, timer } from 'rxjs';
+import { Observable, Subscription, concatMap, filter, from, map, scan, switchMap, timer } from 'rxjs';
+import { Coordinates } from 'src/app/shared/models/GoogleMap';
 import { Milestone } from 'src/app/shared/models/Milestones';
-import { ReadLocationJsonService } from 'src/app/shared/services/read-location-json.service';
+import { Polyline } from 'src/app/shared/models/Polyline';
+import { PolylineService } from 'src/app/shared/services/api/backend/polyline.service';
 
 const timeOf = (interval: number) => <T>(val: T) =>
   timer(interval).pipe(map(x => val));
@@ -43,11 +45,13 @@ const specialImgMkIcon: google.maps.Icon = {
 export class MapComponent {
   @Input() milestones: Array<Milestone> = [];
   @Input() milestoneItemClicked?: Milestone;
+  @Output() menuToggleEmit: EventEmitter<any> = new EventEmitter();
   @ViewChild(GoogleMap, { static: true }) googleMap?: GoogleMap;
   @ViewChildren('milestoneMarker') mapMarkers?: QueryList<MapMarker>;
   @ViewChild('mainMarker') mapMainMarker?: MapMarker;
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
   @ViewChild(MapPolyline, { static: true }) mapPolyline!: MapPolyline;
+  @ViewChild('menuButton') menuButton!: ElementRef<HTMLButtonElement>;
   milestoneMarkers$!: Observable<Array<Milestone>>;
   milestoneMarker?: Milestone = undefined;
   gmOptions: google.maps.MapOptions = {
@@ -78,7 +82,7 @@ export class MapComponent {
 
   subscription: Subscription = new Subscription();
   constructor(
-    private readLocationJsonService: ReadLocationJsonService
+    private polylineService: PolylineService
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -92,8 +96,47 @@ export class MapComponent {
       this.findMarkerForInfowindow(milestoneItemClicked)
     }
   }
+
+  ngAfterViewInit(){
+    console.log(this.menuButton);
+    this.addCustomControl();
+  }
   ngOnInit() {
     this.listenMapZoomChangedEvent();
+  }
+
+  private addCustomControl(){
+    this.googleMap?.controls[google.maps.ControlPosition.TOP_CENTER].push(this.menuButton.nativeElement)
+  }
+
+  openMenu(){
+    console.log('toggle...');
+    
+    this.menuToggleEmit.emit('something...');
+  }
+
+  private createCenterControl() {
+    const controlButton = document.createElement('button');
+  
+    // Set CSS for the control.
+    controlButton.style.backgroundColor = '#fff';
+    controlButton.style.border = '2px solid #fff';
+    controlButton.style.borderRadius = '3px';
+    controlButton.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+    controlButton.style.color = 'rgb(25,25,25)';
+    controlButton.style.cursor = 'pointer';
+    controlButton.style.fontFamily = 'Roboto,Arial,sans-serif';
+    controlButton.style.fontSize = '16px';
+    controlButton.style.lineHeight = '38px';
+    controlButton.style.margin = '8px 0 22px';
+    controlButton.style.padding = '0 5px';
+    controlButton.style.textAlign = 'center';
+  
+    controlButton.textContent = 'Center Map';
+    controlButton.title = 'Click to recenter the map';
+    controlButton.type = 'button';
+  
+    return controlButton;
   }
 
   private listenMapZoomChangedEvent(){
@@ -122,13 +165,13 @@ export class MapComponent {
     this.subscription.add(
       this.mapMarkers?.changes.pipe(
         filter(markers=>markers.length === this.milestones.length),
-        switchMap(_=>this.readLocationJsonService.get())
+        switchMap(_=>this.polylineService.get())
       ).subscribe(res=>{
         const polyLinePath = this.mapPolyline.polyline!.getPath();
-        const responses: Array<string | google.maps.DirectionsResult> = res;
-        for(let response of responses){
-          this.polylineSetMap(polyLinePath, response as google.maps.DirectionsResult)
-        }
+        const metaData: Polyline = res.metaData;
+
+        this.polylineSetMap(polyLinePath, metaData.polylines)
+
         setTimeout(() => {
           this.mapMainMarker?.marker?.setMap(null);
         }, 10000);
@@ -136,65 +179,13 @@ export class MapComponent {
     )
   }
 
-  private initDirections(map: google.maps.Map, start?: google.maps.LatLngLiteral, destination?: google.maps.LatLngLiteral): Promise<google.maps.DirectionsResult>{
-    let rendererOptions = {
-      map: map, // Bản đồ đích
-      draggable: true, //Cho phép kéo map
-      preserveViewport: true 
-    };
-    let directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-    let directionsService = new google.maps.DirectionsService();
-
-    // directionsDisplay.setMap(map);
-    let request: google.maps.DirectionsRequest = {
-      origin: new google.maps.LatLng(start?.lat || NaN, start?.lng || NaN), //Điểm Start
-      destination: new google.maps.LatLng(destination?.lat || NaN, destination?.lng || NaN), // Điểm Đích
-      travelMode: google.maps.TravelMode.DRIVING, // Phương tiện giao thông
-    };
-    return new Promise((resolve, reject)=>{
-      directionsService.route(request, function(response: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) {
-        console.log(status);
-        if (status === google.maps.DirectionsStatus.OK) {
-          directionsDisplay.setDirections(response)
-          resolve(response as google.maps.DirectionsResult)
-        }
-        reject(status);
-      });
-    })
-  }
-
   private initMarkers(milestones: Array<Milestone>) {
     this.milestoneMarkers$ = from(milestones).pipe(
       timed(200)
     );
     
-    // this.initPolyline();
-    // this.listenMarkerElementChange(milestones);
+    this.initPolyline();
 
-  }
-
-  private listenMarkerElementChange(milestones: Array<Milestone>){
-    this.subscription.add(
-      this.mapMarkers?.changes.pipe(
-        filter(markers=>markers.length === milestones.length)
-      ).subscribe((res: QueryList<MapMarker>)=>{
-        const markers = res.toArray();
-        const arrSlectives = [];
-          
-        for(let [i, marker] of markers.entries()){
-          if(markers[i+1]){
-            const markerPosition = marker.getPosition()?.toJSON();
-            const nextMarkerPosition = markers[i+1]?.getPosition()?.toJSON() || null;
-            arrSlectives.push({
-              origin: markerPosition,
-              destination: nextMarkerPosition
-            });
-          }
-        }
-        
-        this.loopGetResponseDirections(arrSlectives);
-      })
-    )
   }
 
   openInfoWindow(marker: MapMarker, milestone: Milestone) {
@@ -223,45 +214,18 @@ export class MapComponent {
     }
   }
 
-  private async loopGetResponseDirections(arrSlectives: Array<any>){
-    const arrResponse: Array<google.maps.DirectionsResult | string> = [];
-    for(let element of arrSlectives){
-      try {
-        const response = await this.initDirections(this.googleMap!.googleMap!, element.origin, element.destination);
-        arrResponse.push(response);
-      } catch (error) {
-        arrResponse.push(error as string);
+  private polylineSetMap(polyline: google.maps.MVCArray<google.maps.LatLng>, polylines: Array<Array<Coordinates>>){
+    for(let i=0; i< polylines.length; i++){
+      const element = polylines[i];
+      for(let j=0; j< element.length; j++){
+        const path = element[j];
+        const newCoordinates: google.maps.LatLng = new google.maps.LatLng(path.lat, path.lng);
+        setTimeout(() => {
+          polyline.push(newCoordinates);
+          this.mapMainMarker?.marker?.setPosition(newCoordinates)
+        }, 1);
       }
     }
-    console.log(arrResponse);
-  }
-
-  private polylineSetMap(polyline: google.maps.MVCArray<google.maps.LatLng>, response: google.maps.DirectionsResult){
-    const legs: google.maps.DirectionsLeg[] = response.routes[0].legs;
-    for(let i=0; i< legs.length; i++){
-      const leg = legs[i];
-      for(let j=0; j< leg.steps.length; j++){
-        const steps = leg.steps[j];
-        for(let k=0; k< steps.path.length; k++){
-          const path = steps.path[k];
-          const lat: number = path.lat as any;
-          const lng: number = path.lng as any;
-          const newCoordinates: google.maps.LatLng = new google.maps.LatLng(lat, lng);
-          setTimeout(() => {
-            polyline.push(newCoordinates);
-            this.mapMainMarker?.marker?.setPosition(newCoordinates)
-          }, 1);
-        }
-      }
-    }
-  }
-
-  private delaySetPolyline(ms: number){
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve('');
-      }, ms);
-    })
   }
 
   ngOnDestroy(){

@@ -1,6 +1,6 @@
 
 <h1>Bản đồ</h1>
-<google-map #googleMap height="800px" width="900px" [options]="gmOptions"
+<google-map #googleMap height="800px" [options]="gmOptions"
   (mapRightclick)="mapRightMouseClick($event)" (mapMousemove)="move($event)">
   <map-marker #marker="mapMarker" *ngFor="let milestone of milestones" [position]="milestone.coordinates"
     (mapClick)="openInfoWindow(marker, milestone)" [options]="mkOptions" [title]="milestone.numericalOrder.toString()">
