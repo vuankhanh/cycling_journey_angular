@@ -1,0 +1,27 @@
+<div class="container" fxLayout="column">
+    <mat-toolbar fxLayout="row" fxLayoutGap="15px">
+        <button mat-icon-button [mat-dialog-close]>
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span class="example-spacer"></span>
+        <span>Cycling Journey</span>
+    </mat-toolbar>
+    <div mat-dialog-content fxLayout="row">
+        <swiper-container init="false" #swiper>
+            <ng-container *ngFor="let gallery of data.metaData">
+                <swiper-slide>
+                    <div class="slide-container" fxLayout="row" fxLayoutAlign="center center" >
+                        <ng-container *ngIf="gallery.video; else image">
+
+                        </ng-container>
+                        <ng-template #image>
+                            <pinch-zoom [autoHeight]="true" style="height: 100%; width: 100%;">
+                                <img [src]="gallery.src" alt="">
+                            </pinch-zoom>
+                        </ng-template>
+                    </div>
+                </swiper-slide>
+            </ng-container>
+        </swiper-container>
+    </div>
+</div>

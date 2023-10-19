@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PresentRoutingModule } from './present-routing.module';
@@ -9,7 +9,9 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CustomInfoWindowModule } from '../shared/components/custom-info-window/custom-info-window.module';
 import { MaterialModule } from '../shared/modules/material';
-
+import { SlidesComponent } from '../shared/components/slides/slides.component';
+import { register } from 'swiper/element/bundle';
+register();
 
 @NgModule({
   declarations: [
@@ -25,8 +27,10 @@ import { MaterialModule } from '../shared/modules/material';
     FlexLayoutModule,
 
     CustomInfoWindowModule,
+    SlidesComponent,
 
     GoogleMapsModule
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PresentModule { }

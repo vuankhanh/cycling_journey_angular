@@ -1,17 +1,23 @@
-import { Component, ViewChild } from '@angular/core';
-import { Observable, Subscription, of } from 'rxjs';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Observable, Subject, Subscription, fromEvent, map, of } from 'rxjs';
 import { MilestoneService } from '../shared/services/api/backend/milestone.service';
 import { Milestone, MilestonesResponse } from '../shared/models/Milestones';
 import { BreakpointDetectionService } from '../shared/services/breakpoint-detection.service';
-import { MatSidenav } from '@angular/material/sidenav';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { DeactivatableComponent } from '../shared/core/guard/component-are-destroyed.guard';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-present',
   templateUrl: './present.component.html',
-  styleUrls: ['./present.component.scss']
+  styleUrls: ['./present.component.scss'],
+  host: {
+    class: 'presentContainer'
+  }
 })
-export class PresentComponent {
-  @ViewChild('snav', { static: true }) snav!: MatSidenav;
+export class PresentComponent implements DeactivatableComponent{
+  @ViewChild('milestonesTemp') milestonesTemp!: TemplateRef<any>;
+  @ViewChild('anotherTemplate') anotherTemplate!: TemplateRef<any>;
   breakpointDetection$: Observable<boolean> = of(false);
   milestones: Array<Milestone> = [];
 
@@ -19,13 +25,22 @@ export class PresentComponent {
 
   subscription: Subscription = new Subscription()
   constructor(
+    private matDialog: MatDialog,
+    private matBottomSheet: MatBottomSheet,
     private milestoneService: MilestoneService,
     private breakpointDetectionService: BreakpointDetectionService
   ){
-    this.breakpointDetection$ = this.breakpointDetectionService.detection$()
+    this.breakpointDetection$ = this.breakpointDetectionService.detection$();
   }
   ngOnInit(){
     this.getMilestones();
+    this.subscription.add(
+      fromEvent(window, 'popstate').subscribe(res=>{
+        if(this.matDialog.openDialogs.length>0){
+          history.pushState(null, '');
+        }  
+      })
+    )
   }
 
   private getMilestones(){
@@ -39,13 +54,23 @@ export class PresentComponent {
 
   listenItemClick(milestone: Milestone){
     this.milestoneItemClicked = milestone;
-    this.toggle();
+    this.closeMilestoneMenu();
   }
 
   toggle(){
-    console.log('toggle...');
-    
-    this.snav.toggle();
+    this.openBottomSheet();
+  }
+
+  closeMilestoneMenu(){
+    this.matBottomSheet.dismiss();
+  }
+
+  openBottomSheet(): void {
+    const bottomSheet = this.matBottomSheet.open(this.milestonesTemp);
+  }
+
+  canDeactivate(){
+    return true
   }
 
   ngOnDestroy(){

@@ -17,7 +17,7 @@ export class BreakpointDetectionService {
   ) { }
 
   detection$(){
-    return this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.HandsetPortrait]).pipe(
+    return this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape]).pipe(
       map((state: BreakpointState) => state.matches)
     )
   }

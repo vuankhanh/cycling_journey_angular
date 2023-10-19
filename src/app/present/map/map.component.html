@@ -1,16 +1,21 @@
-<google-map #googleMap height="100vh" width="100%" [options]="gmOptions">
-  <map-marker #milestoneMarker="mapMarker" *ngFor="let milestone of milestoneMarkers$ | async" [position]="milestone.coordinates"
-    (mapClick)="openInfoWindow(milestoneMarker, milestone)" [options]="mkOptions" [title]="milestone.numericalOrder.toString()">
+<google-map #googleMap height="100%" width="100%" [options]="gmOptions">
+  <map-marker #milestoneMarker="mapMarker" *ngFor="let milestone of milestoneMarkers$ | async"
+    [position]="milestone.coordinates" (mapClick)="openInfoWindow(milestoneMarker, milestone)"
+    [options]="mkOptions" [title]="milestone.numericalOrder.toString()">
   </map-marker>
   <map-info-window [options]="iwOptions" (closeclick)="closeInfoWindow()">
-    <ng-container *ngIf="infoWindowContent">
-      <app-custom-info-window [milestone]="milestoneMarker" *ngIf="milestoneMarker"></app-custom-info-window>
+    <ng-container *ngIf="milestoneMarker">
+      <ng-container *ngTemplateOutlet="infoWindowTemp; context:milestoneMarker"></ng-container>
     </ng-container>
   </map-info-window>
   <map-polyline #poliline [options]="mpOptions"></map-polyline>
   <map-marker #mainMarker="mapMarker" [options]="sMkOptions"></map-marker>
 
-  <button #menuButton (click)="openMenu()">
+  <button #menuButton (click)="openMenu()" style="position: absolute;">
     <mat-icon>menu</mat-icon>
   </button>
 </google-map>
+
+<ng-template #infoWindowTemp>
+  <app-custom-info-window [milestone]="milestoneMarker" [galleryConfig]="galleryConfig"></app-custom-info-window>
+</ng-template>

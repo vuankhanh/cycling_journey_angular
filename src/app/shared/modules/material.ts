@@ -19,6 +19,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 @NgModule({
     imports: [CommonModule],
@@ -42,7 +43,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatDatepickerModule,
         MatNativeDateModule,
         MatTableModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatBottomSheetModule
     ]
 })
 export class MaterialModule {}

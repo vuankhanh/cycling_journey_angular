@@ -5,6 +5,7 @@ import { GalleryComponent } from '@daelmaak/ngx-gallery';
 import { MaterialModule } from '../../modules/material';
 import { SharingPipesModule } from '../../pipes/sharing-pipes.module';
 import { SetBaseUrlPipe } from '../../pipes/set-base-url.pipe';
+import { SlidesComponent } from '../slides/slides.component';
 
 
 
@@ -16,6 +17,7 @@ import { SetBaseUrlPipe } from '../../pipes/set-base-url.pipe';
     CommonModule,
     GalleryComponent,
     MaterialModule,
+    SlidesComponent,
 
     //Sharing pipes
     SharingPipesModule,

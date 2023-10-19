@@ -4,3 +4,15 @@ google-map{
         width: 100%;
     }
 }
+
+::ng-deep .custom-info-window{
+    gallery{
+        width: unset !important;
+        height: unset !important;
+        viewer{
+            img{
+                object-fit: cover !important;
+            }
+        }
+    }
+}

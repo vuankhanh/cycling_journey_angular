@@ -1,10 +1,12 @@
 import { Component, Input, SimpleChange, SimpleChanges } from '@angular/core';
 import { Milestone } from '../../models/Milestones';
-import { GalleryItem } from '@daelmaak/ngx-gallery';
+import { GalleryComponent, GalleryItem, GalleryItemEvent } from '@daelmaak/ngx-gallery';
 import { Album, Media } from '../../models/Album';
 import { SetBaseUrlPipe } from '../../pipes/set-base-url.pipe';
 import { Subscription } from 'rxjs';
 import { MilestoneService } from '../../services/api/backend/milestone.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SlidesComponent } from '../slides/slides.component';
 
 @Component({
   selector: 'app-custom-info-window',
@@ -13,11 +15,13 @@ import { MilestoneService } from '../../services/api/backend/milestone.service';
 })
 export class CustomInfoWindowComponent {
   @Input() milestone?: Milestone = undefined;
+  @Input() galleryConfig: GalleryComponent = new GalleryComponent();
   album?: Album = undefined;
   galleryItems: GalleryItem[] = [];
 
   subscription: Subscription = new Subscription();
   constructor(
+    private matDialog: MatDialog,
     private milestoneService: MilestoneService,
     private setBaseUrlPipe: SetBaseUrlPipe,
   ){
@@ -37,7 +41,6 @@ export class CustomInfoWindowComponent {
   }
 
   ngOnInit(){
-    
   }
 
   getMistoneDetail(id: string){
@@ -66,6 +69,26 @@ export class CustomInfoWindowComponent {
       }
       this.galleryItems.push(galleryItem);
     }
+  }
+
+  selection(event: GalleryItemEvent){
+    console.log(event);
+    const data = {
+      metaData: this.galleryItems,
+      selection: event.index
+    }
+    const dialog = this.matDialog.open(SlidesComponent, {
+      id: '',
+      data: data,
+      minWidth: '100%',
+      minHeight: '100%',
+      maxWidth: '100%',
+      maxHeight: '100%',
+    })
+    this.subscription.add(
+      dialog.afterOpened().subscribe(_=>history.pushState(null, ''))
+    )
+    
   }
 
   ngOnDestroy(){

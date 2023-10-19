@@ -1,0 +1,57 @@
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { SwiperContainer, register } from 'swiper/element/bundle';
+import { MaterialModule } from '../../modules/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FlexModule } from '@angular/flex-layout';
+import { PinchZoomModule, PinchZoomComponent } from '@meddv/ngx-pinch-zoom';
+
+register();
+
+@Component({
+  selector: 'app-slides',
+  templateUrl: './slides.component.html',
+  styleUrls: ['./slides.component.scss'],
+  standalone: true,
+  imports: [
+    MaterialModule,
+    FlexModule,
+    PinchZoomModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class SlidesComponent {
+  @ViewChild('swiper') swiper!: ElementRef<SwiperContainer>;
+  @ViewChildren(PinchZoomComponent) pinchZoomComponents!: QueryList<PinchZoomComponent>
+  config!: any;
+  defaultIndex = 3;
+  constructor(
+    public dialogRef: MatDialogRef<SlidesComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ){
+    
+  }
+
+  ngOnInit(){
+    console.log(this.data);
+    this.config = {
+      slidesPerView: 3,
+      initialSlide: this.data.selection
+    }
+    
+  }
+  
+  ngAfterViewInit(){
+    const swiperParams = {
+      initialSlide:  this.data.selection,
+      zoom: true,
+      on: {
+        init() {
+          // ...
+        },
+      },
+    };
+    console.log(this.swiper.nativeElement);
+    Object.assign(this.swiper.nativeElement, swiperParams);
+    this.swiper.nativeElement.initialize();
+  }
+}
