@@ -1,10 +1,10 @@
 {
     "/api": {
-        "target": "http://192.168.1.3:3000",
+        "target": "http://localhost:3000",
         "secure": false
     },
     "/static": {
-        "target": "http://192.168.1.3:3000",
+        "target": "http://localhost:3000",
         "secure": false
     }
 }
