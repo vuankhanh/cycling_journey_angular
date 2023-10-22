@@ -82,8 +82,7 @@
               "browserTarget": "cycling_journey_angular:build:production"
             },
             "development": {
-              "browserTarget": "cycling_journey_angular:build:development",
-              "proxyConfig": "src/proxy.conf.json"
+              "browserTarget": "cycling_journey_angular:build:development"
             }
           },
           "defaultConfiguration": "development"
