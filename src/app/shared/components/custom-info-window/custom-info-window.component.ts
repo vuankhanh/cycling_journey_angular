@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, QueryList, SimpleChange, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { Milestone } from '../../models/Milestones';
 import { GalleryComponent, GalleryItem, GalleryItemEvent } from '@daelmaak/ngx-gallery';
 import { Album, Media } from '../../models/Album';
@@ -16,6 +16,7 @@ import { SlidesComponent } from '../slides/slides.component';
 export class CustomInfoWindowComponent {
   @Input() milestone?: Milestone = undefined;
   @Input() galleryConfig: GalleryComponent = new GalleryComponent();
+  @ViewChild(GalleryComponent, { read: ElementRef }) galleryComponent!: ElementRef;
   album?: Album = undefined;
   galleryItems: GalleryItem[] = [];
 
@@ -69,14 +70,22 @@ export class CustomInfoWindowComponent {
       }
       this.galleryItems.push(galleryItem);
     }
+
+    setTimeout(() => {
+      const childNodes: NodeList = this.galleryComponent.nativeElement.querySelectorAll('video');
+      childNodes.forEach(e=>{
+        const video: HTMLVideoElement = e as HTMLVideoElement;
+        video.style.pointerEvents = 'none';
+      })
+    }, 150);
   }
 
   selection(event: GalleryItemEvent){
-    console.log(event);
     const data = {
       metaData: this.galleryItems,
       selection: event.index
     }
+    
     const dialog = this.matDialog.open(SlidesComponent, {
       id: '',
       data: data,
@@ -88,7 +97,6 @@ export class CustomInfoWindowComponent {
     this.subscription.add(
       dialog.afterOpened().subscribe(_=>history.pushState(null, ''))
     )
-    
   }
 
   ngOnDestroy(){

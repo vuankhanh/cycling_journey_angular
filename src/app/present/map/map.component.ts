@@ -3,8 +3,7 @@ import { GoogleMap, MapInfoWindow, MapMarker, MapPolyline } from '@angular/googl
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
-import { Observable, Subject, Subscription, concatMap, filter, from, map, scan, switchMap, take, timer } from 'rxjs';
-import { SlidesComponent } from 'src/app/shared/components/slides/slides.component';
+import { Observable, Subscription, concatMap, filter, from, map, scan, switchMap, take, timer } from 'rxjs';
 import { Coordinates } from 'src/app/shared/models/GoogleMap';
 import { Milestone } from 'src/app/shared/models/Milestones';
 import { Polyline } from 'src/app/shared/models/Polyline';
@@ -79,7 +78,8 @@ export class MapComponent {
   }
 
   mpOptions: google.maps.PolylineOptions = {
-    strokeColor: 'green',
+    strokeColor: '#00b0ff',
+    strokeWeight: 5
   }
 
   sMkOptions: google.maps.MarkerOptions = {

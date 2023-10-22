@@ -10,9 +10,13 @@
         <swiper-container init="false" #swiper>
             <ng-container *ngFor="let gallery of data.metaData">
                 <swiper-slide>
-                    <div class="slide-container" fxLayout="row" fxLayoutAlign="center center" >
+                    <div class="slide-container" fxLayout="row" fxLayoutAlign="center center">
                         <ng-container *ngIf="gallery.video; else image">
-
+                            <video muted playsinline controls preload>
+                                <source [src]="gallery.src" type="video/webm; codecs=vp9">
+                                <source [src]="gallery.src" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </ng-container>
                         <ng-template #image>
                             <pinch-zoom [autoHeight]="true" style="height: 100%; width: 100%;">

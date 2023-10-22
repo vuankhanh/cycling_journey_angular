@@ -41,8 +41,6 @@ export class UploadComponent {
   }
 
   ngOnInit(){
-    console.log(this.data);
-    
     this.initForm();
   }
 
@@ -111,7 +109,12 @@ export class UploadComponent {
       
       this.subscription.add(
         this.albumService.modify(id, name, description, blobFiles, filesWillRemove).subscribe(res=>{
+          console.log(res);
+          
           this.dialogRef.close(res.metaData)
+        },(err)=>{
+          console.log(err);
+          
         })
       )
     }

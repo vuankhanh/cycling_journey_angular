@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, Inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { SwiperContainer, register } from 'swiper/element/bundle';
+import { Swiper } from 'swiper';
 import { MaterialModule } from '../../modules/material';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FlexModule } from '@angular/flex-layout';
@@ -21,9 +22,8 @@ register();
 })
 export class SlidesComponent {
   @ViewChild('swiper') swiper!: ElementRef<SwiperContainer>;
-  @ViewChildren(PinchZoomComponent) pinchZoomComponents!: QueryList<PinchZoomComponent>
-  config!: any;
-  defaultIndex = 3;
+  @ViewChildren(PinchZoomComponent) pinchZoomComponents!: QueryList<PinchZoomComponent>;
+  currentIndex: number = 0;
   constructor(
     public dialogRef: MatDialogRef<SlidesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -31,27 +31,25 @@ export class SlidesComponent {
     
   }
 
-  ngOnInit(){
-    console.log(this.data);
-    this.config = {
-      slidesPerView: 3,
-      initialSlide: this.data.selection
-    }
-    
-  }
+  ngOnInit(){}
   
   ngAfterViewInit(){
     const swiperParams = {
       initialSlide:  this.data.selection,
       zoom: true,
       on: {
-        init() {
-          // ...
-        },
+        realIndexChange: (swiper: Swiper) => {
+          this.realIndexChange(swiper);
+        }
       },
     };
-    console.log(this.swiper.nativeElement);
+
     Object.assign(this.swiper.nativeElement, swiperParams);
     this.swiper.nativeElement.initialize();
+  }
+
+  realIndexChange(swiper: Swiper){
+    this.currentIndex = swiper.realIndex;
+
   }
 }
