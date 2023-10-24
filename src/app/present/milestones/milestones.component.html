@@ -2,7 +2,7 @@
 <mat-list>
     <mat-list-item *ngFor="let milestone of milestones" (click)="openWindowMarker(milestone)">
       <mat-icon matListItemIcon>emoji_flags</mat-icon>
-      <div matListItemTitle>{{milestone.name}}</div>
+      <div matListItemTitle>{{milestone.numericalOrder +'. '+ milestone.name}}</div>
       <div matListItemLine>{{milestone.dateTime | date: 'dd/MM/yyyy'}}</div>
     </mat-list-item>
     <mat-divider></mat-divider>
