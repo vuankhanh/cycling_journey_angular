@@ -20,6 +20,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
     imports: [CommonModule],
@@ -44,7 +47,10 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
         MatNativeDateModule,
         MatTableModule,
         MatTooltipModule,
-        MatBottomSheetModule
+        MatBottomSheetModule,
+        MatAutocompleteModule,
+        MatRadioModule,
+        MatCheckboxModule,
     ]
 })
 export class MaterialModule {}

@@ -1,19 +1,26 @@
-
 <h1>Bản đồ</h1>
-<google-map #googleMap height="800px" width="100%"[options]="gmOptions"
-  (mapRightclick)="mapRightMouseClick($event)" (mapMousemove)="move($event)">
+
+<google-map #googleMap height="800px" width="100%" [options]="gmOptions" (mapRightclick)="mapRightMouseClick($event)">
+
+  <div #findAddressContainer >
+    <mat-form-field class="example-full-width">
+      <mat-label>Tọa độ</mat-label>
+      <input #addresstext matInput placeholder="Nhập tọa độ" [formControl]="findAddressControl">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="findAddress(findAddressControl)">Tìm kiếm</button>
+  </div>
+
   <map-marker #marker="mapMarker" *ngFor="let milestone of milestones" [position]="milestone.coordinates"
     (mapClick)="openInfoWindow(marker, milestone)" [options]="mkOptions" [title]="milestone.numericalOrder.toString()">
   </map-marker>
+
   <map-info-window (closeclick)="closeInfoWindow()">
     <ng-container *ngIf="infoWindowContent">
       <app-custom-info-window [milestone]="milestoneMarker" *ngIf="milestoneMarker"></app-custom-info-window>
     </ng-container>
   </map-info-window>
-</google-map>
 
-<div>Latitude: {{display.lat ? display.lat : ''}}</div>
-<div>Longitude: {{display.lng ? display.lng : ''}}</div>
+</google-map>
 
 <ng-template #contextMenu let-coordinates>
   <div class="example-menu">

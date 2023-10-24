@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
@@ -12,7 +13,6 @@ import { JourneyComponent } from './journey.component';
 import { MapsComponent } from './maps/maps.component';
 import { NewMilestonesComponent } from '../../shared/components/new-milestones/new-milestones.component';
 import { MilestonesComponent } from './milestones/milestones.component';
-import { CustomInfoWindowComponent } from '../../shared/components/custom-info-window/custom-info-window.component';
 
 //directives
 import { DisableDefaultRightMouseClickDirective } from '../../shared/directives/disable-default-right-mouse-click.directive';
@@ -37,6 +37,8 @@ import { CustomInfoWindowModule } from 'src/app/shared/components/custom-info-wi
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     OverlayModule,
     PortalModule,
     MapsRoutingModule,

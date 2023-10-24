@@ -1,12 +1,13 @@
-import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, ViewContainerRef, ElementRef } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { MatDialog } from '@angular/material/dialog';
 import { MilestoneData, NewMilestonesComponent } from '../../../shared/components/new-milestones/new-milestones.component';
 import { Milestone } from 'src/app/shared/models/Milestones';
 import { Subscription } from 'rxjs';
-import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { GalleryItem } from '@daelmaak/ngx-gallery';
+import { FormControl } from '@angular/forms';
 
 const centerMap: google.maps.LatLngLiteral = {
   lat: 16.48933704291298,
@@ -21,9 +22,12 @@ const centerMap: google.maps.LatLngLiteral = {
 export class MapsComponent {
   @Input() milestones: Array<Milestone> = [];
   @Output() newMilestone = new EventEmitter<Milestone>();
+  @ViewChild(GoogleMap, { static: true }) googleMap!: GoogleMap;
+  @ViewChild('findAddressContainer') findAddressContainer!: ElementRef<HTMLDivElement>;
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
   @ViewChild('contextMenu') contextMenu!: TemplateRef<any>;
 
+  findAddressControl: FormControl = new FormControl();
   milestoneMarker?: Milestone = undefined;
   galleryItems: GalleryItem[] = [];
   subscription: Subscription = new Subscription();
@@ -43,6 +47,7 @@ export class MapsComponent {
     size: new google.maps.Size(25, 37),
     scaledSize: new google.maps.Size(25, 37)
   }
+
   mkOptions: google.maps.MarkerOptions = {
     icon: this.imgMkIcon
   }
@@ -60,6 +65,35 @@ export class MapsComponent {
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(){
+    this.addCustomControl();
+  }
+
+  private addCustomControl(){
+    console.log(this.findAddressContainer.nativeElement);
+    
+    this.googleMap?.controls[google.maps.ControlPosition.TOP_LEFT].push(this.findAddressContainer.nativeElement)
+  }
+
+  findAddress(control: FormControl){
+    const controlValue = control.value;
+    const lat = parseFloat(controlValue.split(',')[0]);
+    const lng = parseFloat(controlValue.split(',')[1]);
+    const coordinates: google.maps.LatLngLiteral = { lat, lng };
+
+    const map = this.googleMap.googleMap!;
+    const newMarker = new google.maps.Marker({
+      position: coordinates,
+      map,
+      title: "New Find",
+    });
+
+    map.setCenter(coordinates);
+    map.setZoom(14);
+
+    newMarker.addListener("rightclick", this.mapRightMouseClick.bind(this))
   }
 
   mapRightMouseClick(event: google.maps.MapMouseEvent) {
