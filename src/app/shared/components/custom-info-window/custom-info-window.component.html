@@ -9,7 +9,7 @@
     </ng-container>
     <mat-list-item>
         <div matListItemTitle>{{milestone.name}}</div>
-        <div matListItemLine>{{milestone.createdAt | date: 'dd/MM/yyyy'}}</div>
+        <div matListItemLine>{{milestone.dateTime | date: 'dd/MM/yyyy'}}</div>
     </mat-list-item>
     <ng-container *ngIf="album">
         <p>{{album.description}}</p>

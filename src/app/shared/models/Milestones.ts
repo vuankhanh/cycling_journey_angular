@@ -5,6 +5,7 @@ export interface Milestone{
     numericalOrder: number,
     name: string,
     address: string,
+    dateTime: Date,
     coordinates: google.maps.LatLng | google.maps.LatLngLiteral,
     albumId: string | Album,
     createdAt: Date,
