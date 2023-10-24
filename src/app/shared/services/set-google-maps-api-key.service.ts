@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment.development';
 export class SetGoogleMapsApiKeyService {
 
   constructor() { }
-  async append(){
+  async append() {
     await this.loadScript(`https://maps.googleapis.com/maps/api/js?key=${environment.googleMapApiKey}&libraries=geometry`)
   }
 
@@ -16,8 +16,9 @@ export class SetGoogleMapsApiKeyService {
       script.type = 'text/javascript';
       script.src = name;
       document.getElementsByTagName('head')[0].appendChild(script);
-      console.log('Script Loaded');
-      resolve(null)
+      setTimeout(() => {
+        resolve(null)
+      }, 150);
     });
   }
 }

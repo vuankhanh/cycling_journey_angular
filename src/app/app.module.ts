@@ -52,7 +52,7 @@ export const MY_FORMATS = {
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {
       provide: APP_INITIALIZER,
-      useFactory: (apiKeyService: SetGoogleMapsApiKeyService) => () => apiKeyService.append(),
+      useFactory: (apiKeyService: SetGoogleMapsApiKeyService) => async() => await apiKeyService.append(),
       deps: [SetGoogleMapsApiKeyService],
       multi: true
     }
