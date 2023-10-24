@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { LoginComponent } from './login/login.component';
 import { permissionGuard } from '../shared/core/guard/permission.guard';
+import { NuclearSuitcaseComponent } from './nuclear-suitcase/nuclear-suitcase.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
       }, {
         path: 'album',
         loadChildren: ()=> import('./albums/albums.module').then(m=>m.AlbumModule),
+        canActivate: [permissionGuard]
+      }, {
+        path: 'nuclear-suitcase',
+        component: NuclearSuitcaseComponent,
         canActivate: [permissionGuard]
       }, {
         path: 'login',

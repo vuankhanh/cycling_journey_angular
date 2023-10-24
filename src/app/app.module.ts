@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { ToastrModule } from 'ngx-toastr';
 import { ShowToastInterceptor } from './shared/core/interceptors/show-toast.interceptor';
 import { AuthInterceptor } from './shared/core/interceptors/auth.interceptor';
+import { SetGoogleMapsApiKeyService } from './shared/services/set-google-maps-api-key.service';
 
 
 export const MY_FORMATS = {
@@ -49,7 +50,12 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: ShowToastInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (apiKeyService: SetGoogleMapsApiKeyService) => () => apiKeyService.append(),
+      deps: [SetGoogleMapsApiKeyService],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -6,11 +6,13 @@ import { AdminComponent } from './admin.component';
 
 import { MaterialModule } from '../shared/modules/material';
 import { LoginComponent } from './login/login.component';
+import { NuclearSuitcaseComponent } from './nuclear-suitcase/nuclear-suitcase.component';
 
 
 @NgModule({
   declarations: [
     AdminComponent,
+    NuclearSuitcaseComponent,
   ],
   imports: [
     CommonModule,

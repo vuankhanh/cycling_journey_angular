@@ -12,6 +12,7 @@ export class AdminComponent {
   menu = [
     { name: 'Hành trình', route: 'journey' },
     { name: 'Album', route: 'album' },
+    { name: 'Vali hạt nhân', route: 'nuclear-suitcase' },
   ]
   constructor(
     private breakpointDetectionService: BreakpointDetectionService
