@@ -154,22 +154,18 @@ export class MapComponent {
       this.mapMarkers?.changes.pipe(
         filter(markers=>markers.length === this.milestones.length),
         switchMap(_=>this.polylineService.get())
-      ).subscribe(res=>{
+      ).subscribe(async res=>{
         const polyLinePath = this.mapPolyline.polyline!.getPath();
         const metaData: Polyline = res.metaData;
 
-        this.polylineSetMap(polyLinePath, metaData.polylines)
-
-        setTimeout(() => {
-          this.mapMainMarker?.marker?.setMap(null);
-        }, 10000);
+        await this.polylineSetMap(polyLinePath, metaData.polylines)
       })
     )
   }
 
   private initMarkers(milestones: Array<Milestone>) {
     this.milestoneMarkers$ = from(milestones).pipe(
-      timed(200)
+      timed(100)
     );
     
     this.initPolyline();
@@ -224,25 +220,31 @@ export class MapComponent {
     }
   }
 
-  private polylineSetMap(polyline: google.maps.MVCArray<google.maps.LatLng>, polylines: Array<Array<Coordinates>>){
+  private async polylineSetMap(polyline: google.maps.MVCArray<google.maps.LatLng>, polylines: Array<Array<Coordinates>>){
     let i: number = 0;
     let $this = this;
-    const myLoop = (ms: number=500)=>{      
-      setTimeout(function() {
-        const element = polylines[i];
-        for(let j=0; j< element.length; j++){
-          const path = element[j];
-          const newCoordinates: google.maps.LatLng = new google.maps.LatLng(path.lat, path.lng);
-            polyline.push(newCoordinates);
-            $this.mapMainMarker?.marker?.setPosition(newCoordinates)
-        }
-        i++;
-        if (i < polylines.length) {
-          myLoop();
-        }
-      }, ms)
+    const myLoop = (ms: number=150)=>{
+      return new Promise((resolve, reject)=>{
+        setTimeout(async ()=>{
+          const element = polylines[i];
+          for(let j=0; j< element.length; j++){
+            const path = element[j];
+            const newCoordinates: google.maps.LatLng = new google.maps.LatLng(path.lat, path.lng);
+              polyline.push(newCoordinates);
+              $this.mapMainMarker?.marker?.setPosition(newCoordinates)
+          }
+          i++;
+          if (i < polylines.length) {
+            await myLoop();
+          }
+          resolve(null)
+        }, ms)
+      })
     }
-    myLoop();
+    await myLoop();
+    console.log('loading is done!');
+    
+    this.mapMainMarker?.marker?.setMap(null);
   }
 
   ngOnDestroy(){
