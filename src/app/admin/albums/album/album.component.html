@@ -3,7 +3,7 @@
         <mat-icon fontIcon="add"></mat-icon>
     </mat-grid-tile>
     <mat-grid-tile *ngFor="let album of albums" [routerLink]="album.route">
-        <img [src]="album.thumbnail | baseUrl" [alt]="album.description">
+        <img [src]="album.thumbnail | baseUrl" [alt]="album.description" loading="lazy">
             
         <mat-grid-tile-footer>
             <mat-list-item>

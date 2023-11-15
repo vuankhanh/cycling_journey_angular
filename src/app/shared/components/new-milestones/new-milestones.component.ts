@@ -119,6 +119,15 @@ export class NewMilestonesComponent {
     coordinatesControl.controls['lng'].setValue(event.latLng?.lng());
   }
 
+  keyDownFunction(event: any) {
+    console.log(event);
+    
+    if (event.keyCode === 13) {
+      alert('you just pressed the enter key');
+      // rest of your code
+    }
+  }
+
   submit(){
     this.data.state === 'update' ? this.update() : this.create();
   }

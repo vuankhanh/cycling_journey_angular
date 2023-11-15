@@ -4,7 +4,7 @@
         <h1 class="example-app-name">Responsive App</h1>
     </mat-toolbar>
 
-    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="(breakpointDetection$ | async) ? 56 : 0">
+    <mat-sidenav-container class="sidenav-container">
         <mat-sidenav
             #snav
             [mode]="(breakpointDetection$ | async) ? 'over' : 'side'"

@@ -242,8 +242,6 @@ export class MapComponent {
       })
     }
     await myLoop();
-    console.log('loading is done!');
-    
     this.mapMainMarker?.marker?.setMap(null);
   }
 

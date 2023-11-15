@@ -11,14 +11,14 @@ export class SetGoogleMapsApiKeyService {
   }
 
   loadScript(name: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise<null>((resolve, reject) => {
       let script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = name;
       document.getElementsByTagName('head')[0].appendChild(script);
       setTimeout(() => {
         resolve(null)
-      }, 150);
+      }, 500);
     });
   }
 }

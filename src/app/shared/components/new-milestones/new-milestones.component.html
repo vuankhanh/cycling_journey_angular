@@ -1,6 +1,6 @@
 <h2 mat-dialog-title align="center">{{ data.state === 'new' ? 'Thêm cột mốc mới' : 'Cập nhật cột mốc' }}</h2>
 <mat-dialog-content class="mat-typography">
-  <form [formGroup]="newMilestoneGroup" fxLayout="column" fxLayoutGap="2px">
+  <form [formGroup]="newMilestoneGroup" fxLayout="column" fxLayoutGap="2px" (keyup.enter)="submit()">
 
     <mat-form-field appearance="outline">
       <mat-label>Số thứ tự(bắt buộc)</mat-label>

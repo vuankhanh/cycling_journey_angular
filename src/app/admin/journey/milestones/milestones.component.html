@@ -1,9 +1,9 @@
 <h1>Các cột mốc</h1>
 <mat-list>
-    <mat-list-item *ngFor="let milestone of milestones" (click)="update(milestone)">
-      <mat-icon matListItemIcon>emoji_flags</mat-icon>
-      <div matListItemTitle>{{milestone.numericalOrder +'. '+ milestone.name}}</div>
-      <div matListItemLine>{{milestone.createdAt | date: 'dd/MM/yyyy'}}</div>
-    </mat-list-item>
-    <mat-divider></mat-divider>
+  <mat-list-item *ngFor="let milestone of milestones" (click)="update(milestone)" id="gidoday">
+    <mat-icon matListItemIcon>emoji_flags</mat-icon>
+    <div matListItemTitle>{{milestone.numericalOrder +'. '+ milestone.name}}</div>
+    <div matListItemLine>{{milestone.dateTime | date: 'dd/MM/yyyy'}}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
 </mat-list>
