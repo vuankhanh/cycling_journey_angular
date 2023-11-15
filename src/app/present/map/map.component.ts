@@ -165,7 +165,7 @@ export class MapComponent {
 
   private initMarkers(milestones: Array<Milestone>) {
     this.milestoneMarkers$ = from(milestones).pipe(
-      timed(100)
+      timed(10)
     );
     
     this.initPolyline();
@@ -223,7 +223,7 @@ export class MapComponent {
   private async polylineSetMap(polyline: google.maps.MVCArray<google.maps.LatLng>, polylines: Array<Array<Coordinates>>){
     let i: number = 0;
     let $this = this;
-    const myLoop = (ms: number=150)=>{
+    const myLoop = (ms: number=50)=>{
       return new Promise((resolve, reject)=>{
         setTimeout(async ()=>{
           const element = polylines[i];
