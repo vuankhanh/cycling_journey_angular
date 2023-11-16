@@ -1,7 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { GoogleMap, MapInfoWindow, MapMarker, MapPolyline } from '@angular/google-maps';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { MatDialog } from '@angular/material/dialog';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
 import { Observable, Subscription, concatMap, filter, from, map, scan, switchMap, take, timer } from 'rxjs';
 import { Coordinates } from 'src/app/shared/models/GoogleMap';
@@ -93,7 +92,6 @@ export class MapComponent {
 
   private subscription: Subscription = new Subscription();
   constructor(
-    private matDialog: MatDialog,
     private matBottomSheet: MatBottomSheet,
     private breakpointDetectionService: BreakpointDetectionService,
     private polylineService: PolylineService
@@ -167,7 +165,7 @@ export class MapComponent {
 
   private initMarkers(milestones: Array<Milestone>) {
     this.milestoneMarkers$ = from(milestones).pipe(
-      timed(10)
+      timed(5)
     );
     
     this.initPolyline();
