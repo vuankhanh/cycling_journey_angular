@@ -1,8 +1,10 @@
 <google-map #googleMap height="100%" width="100%" [options]="gmOptions">
-  <map-marker #milestoneMarker="mapMarker" *ngFor="let milestone of milestoneMarkers$ | async"
-    [position]="milestone.coordinates" (mapClick)="openInfoWindow(milestoneMarker, milestone)"
-    [options]="mkOptions" [title]="milestone.numericalOrder.toString()">
-  </map-marker>
+  <map-marker-clusterer [imagePath]="markerClustererImagePath">
+    <map-marker #milestoneMarker="mapMarker" *ngFor="let milestone of milestoneMarkers$ | async"
+      [position]="milestone.coordinates" (mapClick)="openInfoWindow(milestoneMarker, milestone)"
+      [options]="mkOptions" [title]="milestone.numericalOrder.toString()">
+    </map-marker>
+  </map-marker-clusterer>
   <map-info-window [options]="iwOptions" (closeclick)="closeInfoWindow()">
     <ng-container *ngIf="milestoneMarker">
       <ng-container *ngTemplateOutlet="infoWindowTemp; context:milestoneMarker"></ng-container>
