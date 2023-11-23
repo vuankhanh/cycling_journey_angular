@@ -20,11 +20,10 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Checkout staging branch 
+    - name: Checkout code
       uses: actions/checkout@v3
-      with:
-        ref: staging
-        repository: vuankhanh/cycling_journey_angular/tree/staging
+    - name: Checkout staging branch
+      run: git fetch origin staging
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
