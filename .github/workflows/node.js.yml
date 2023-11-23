@@ -28,5 +28,5 @@ jobs:
         cache: 'npm'
     - run: npm ci
       working-directory: /var/www/front-end/cycling_journey_angular
-    - run: npm run start-staging
+    - run: npm run build-staging
       working-directory: /var/www/front-end/cycling_journey_angular
