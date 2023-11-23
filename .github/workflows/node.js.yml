@@ -23,7 +23,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     - name: Checkout staging branch
-      run: git fetch origin staging
+      run: git pull origin staging
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
