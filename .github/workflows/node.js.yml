@@ -31,4 +31,5 @@ jobs:
     - run: npm run build-staging
     - run: pwd
     - run: mv /var/www/front-end/cycling_journey_angular /var/www/front-end/cycling_journey_angular_old
-    - run: cp ./dist/cycling_journey_angular /var/www/front-end/cycling_journey_angular
+      continue-on-error: true
+    - run: cp -r ./dist/cycling_journey_angular /var/www/front-end/cycling_journey_angular
