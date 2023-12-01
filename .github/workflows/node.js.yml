@@ -36,4 +36,4 @@ jobs:
     - run: pwd
     - run: mv /var/www/front-end/cycling_journey_angular /var/www/front-end/cycling_journey_angular_old
       continue-on-error: true
-    - run: cp -r ./dist/cycling_journey_angular /var/www/front-end/cycling_journey_angular
+    - run: cp -r ./dist/cycling_journey_angular /var/www/front-end/
