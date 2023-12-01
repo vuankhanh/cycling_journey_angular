@@ -28,8 +28,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: |
-        SET STAGING_BE_API=${{secrets.STAGING_BE_API}}&&SET STAGING_BE_STATIC=${{secrets.STAGING_BE_STATIC}}&&SET DEVSTAGING_GOOGLE_MAP_API_KEY=${{secrets.DEVSTAGING_GOOGLE_MAP_API_KEY}} && node set-env.js
+    - name: Create .env file
+      run: echo "${{ secrets.ENV_FILE }}" > .env
+    - name: 'Create environment file'
+      run: node set-env.js
     - run: npm run build-staging
     - run: pwd
     - run: mv /var/www/front-end/cycling_journey_angular /var/www/front-end/cycling_journey_angular_old

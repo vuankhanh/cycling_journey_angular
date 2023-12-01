@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 // Configure Angular `environment.ts` file path
 const targetPath = './src/environments/environment.staging.ts';
