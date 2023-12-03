@@ -1,5 +1,5 @@
 export const environment = {
-    backendApi: 'http://localhost:4200/staging_api',
-    backendStatic: 'http://localhost:4200/staging_static',
+    backendApi: 'http://192.168.1.8:81/api',
+    backendStatic: 'http://192.168.1.8:81/static',
     googleMapApiKey: ''
 };
