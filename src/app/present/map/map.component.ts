@@ -214,7 +214,11 @@ export class MapComponent {
       this.mapMarkers!.toArray().forEach(marker => {
         const title = parseInt(marker.getTitle() || '');
         if(title == milestone.numericalOrder){
-          this.openInfoWindow(marker, milestone);
+          this.googleMap?.googleMap?.setCenter(marker.getPosition()!)
+          this.googleMap?.googleMap?.setZoom(10);
+          setTimeout(() => {
+            this.openInfoWindow(marker, milestone);
+          }, 150);
         }
       });
     }
