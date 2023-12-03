@@ -30,12 +30,10 @@ jobs:
     - run: npm ci
     - name: Create .env file
       run: echo "${{ secrets.ENV_FILE }}" > .env
-    - name: Create staging environment file
+    - name: 'Create environment file'
       run: node set-env.js
-    - name: Build with staging configuration
-      run: npm run build-staging
-    - name: Change old html folder name
-      run: mv /var/www/front-end/cycling_journey_angular /var/www/front-end/cycling_journey_angular_old
+    - run: npm run build-staging
+    - run: pwd
+    - run: mv /var/www/front-end/cycling_journey_angular /var/www/front-end/cycling_journey_angular_old
       continue-on-error: true
-    - name: Copy the builded html folder to /var/www/front-end/
-      run: cp -r ./dist/cycling_journey_angular /var/www/front-end/
+    - run: cp -r ./dist/cycling_journey_angular /var/www/front-end/
