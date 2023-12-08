@@ -25,7 +25,7 @@
     "@angular/platform-browser-dynamic": "^17.0.6",
     "@angular/router": "^17.0.6",
     "@daelmaak/ngx-gallery": "^3.0.0",
-    "@meddv/ngx-pinch-zoom": "^16.0.0",
+    "@meddv/ngx-pinch-zoom": "^17.0.0",
     "font-awesome": "^4.7.0",
     "moment": "^2.29.4",
     "ngx-toastr": "^18.0.0",
