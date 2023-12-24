@@ -1,3 +1,14 @@
+@if(config){
+    <div class="user-information">
+        <img
+            class="avatar"
+            [src]="config.facebookUser.picture?.data?.url| safeMessage : 'url'"
+            [alt]="config.facebookUser.name"
+            matTooltip="{{config.facebookUser.name}}"
+            (click)="redirectToFacebook(config.facebookUser.id)"
+        >
+    </div>
+}
 <present-map  [milestones]="milestones" [milestoneItemClicked]="milestoneItemClicked" (milestonesToggleEmit)="toggle()"></present-map>
 <ng-template #milestonesTemp>
     <div fxLayout="column">

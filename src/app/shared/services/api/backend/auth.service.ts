@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ConfigResponse } from 'src/app/shared/models/Config';
+import { AdminConfigResponse } from 'src/app/shared/models/AdminConfig';
 import { RefreshTokenResponse, TokenResponse } from 'src/app/shared/models/Token';
 import { environment } from 'src/environments/environment.development';
 
@@ -23,6 +23,6 @@ export class AuthService {
   }
 
   checkToken(){
-    return this.httpClient.post<ConfigResponse>(this.url+'/config', null);
+    return this.httpClient.post<AdminConfigResponse>(this.url+'/config', null);
   }
 }

@@ -64,7 +64,8 @@ export class MapComponent {
   gmOptions: google.maps.MapOptions = {
     mapTypeId: '',
     center: centerMap,
-    zoom: 6
+    zoom: 6,
+    fullscreenControl: false
   };
 
   mkOptions: google.maps.MarkerOptions = {

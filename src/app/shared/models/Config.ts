@@ -1,7 +1,8 @@
+import { FacebookUser } from "./Facebook";
 import { Success } from "./Response";
 
 export interface Config{
-    serverTime: number
+    facebookUser: FacebookUser
 }
 export interface ConfigResponse extends Success{
     metaData: Config

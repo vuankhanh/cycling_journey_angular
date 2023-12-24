@@ -11,6 +11,7 @@ import { CustomInfoWindowModule } from '../shared/components/custom-info-window/
 import { MaterialModule } from '../shared/modules/material';
 import { SlidesComponent } from '../shared/components/slides/slides.component';
 import { register } from 'swiper/element/bundle';
+import { SharingPipesModule } from '../shared/pipes/sharing-pipes.module';
 register();
 
 @NgModule({
@@ -25,6 +26,7 @@ register();
 
     MaterialModule,
     FlexLayoutModule,
+    SharingPipesModule,
 
     CustomInfoWindowModule,
     SlidesComponent,

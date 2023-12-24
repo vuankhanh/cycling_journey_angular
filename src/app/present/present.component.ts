@@ -1,11 +1,13 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { Observable, Subject, Subscription, fromEvent, map, of } from 'rxjs';
+import { Observable, Subscription, fromEvent, of } from 'rxjs';
 import { MilestoneService } from '../shared/services/api/backend/milestone.service';
 import { Milestone, MilestonesResponse } from '../shared/models/Milestones';
 import { BreakpointDetectionService } from '../shared/services/breakpoint-detection.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { DeactivatableComponent } from '../shared/core/guard/component-are-destroyed.guard';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfigService } from '../shared/services/api/backend/config.service';
+import { Config } from '../shared/models/Config';
 
 @Component({
   selector: 'app-present',
@@ -19,6 +21,7 @@ export class PresentComponent implements DeactivatableComponent{
   @ViewChild('milestonesTemp') milestonesTemp!: TemplateRef<any>;
   @ViewChild('anotherTemplate') anotherTemplate!: TemplateRef<any>;
   breakpointDetection$: Observable<boolean> = of(false);
+  config!: Config;
   milestones: Array<Milestone> = [];
 
   milestoneItemClicked?: Milestone;
@@ -28,11 +31,13 @@ export class PresentComponent implements DeactivatableComponent{
     private matDialog: MatDialog,
     private matBottomSheet: MatBottomSheet,
     private milestoneService: MilestoneService,
-    private breakpointDetectionService: BreakpointDetectionService
+    private breakpointDetectionService: BreakpointDetectionService,
+    private configService: ConfigService
   ){
     this.breakpointDetection$ = this.breakpointDetectionService.detection$();
   }
   ngOnInit(){
+    this.getConfig();
     this.getMilestones();
     this.subscription.add(
       fromEvent(window, 'popstate').subscribe(res=>{
@@ -41,6 +46,18 @@ export class PresentComponent implements DeactivatableComponent{
         }  
       })
     )
+  }
+
+  private getConfig(){
+    this.subscription.add(
+      this.configService.get().subscribe(res=>{
+        this.config = res.metaData;
+      })
+    )
+  }
+
+  redirectToFacebook(fbId?: string){
+    window.open(`https://facebook.com/${fbId || 'vu.khanh'}`, '_blank')
   }
 
   private getMilestones(){
