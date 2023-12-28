@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { Observable, Subscription, fromEvent, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, fromEvent, of } from 'rxjs';
 import { MilestoneService } from '../shared/services/api/backend/milestone.service';
 import { Milestone, MilestonesResponse } from '../shared/models/Milestones';
 import { BreakpointDetectionService } from '../shared/services/breakpoint-detection.service';
@@ -24,7 +24,7 @@ export class PresentComponent implements DeactivatableComponent{
   config!: Config;
   milestones: Array<Milestone> = [];
 
-  milestoneItemClicked?: Milestone;
+  milestoneItemClicked$: BehaviorSubject<Milestone | null> = new BehaviorSubject<Milestone | null>(null);
 
   subscription: Subscription = new Subscription()
   constructor(
@@ -70,7 +70,7 @@ export class PresentComponent implements DeactivatableComponent{
   }
 
   listenItemClick(milestone: Milestone){
-    this.milestoneItemClicked = milestone;
+    this.milestoneItemClicked$.next(milestone)
     this.closeMilestoneMenu();
   }
 

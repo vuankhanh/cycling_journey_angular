@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, QueryList, SimpleCh
 import { GoogleMap, MapInfoWindow, MapMarker, MapPolyline } from '@angular/google-maps';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
-import { Observable, Subscription, concatMap, filter, from, map, scan, switchMap, take, timer } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, concatMap, filter, from, map, scan, switchMap, take, timer } from 'rxjs';
 import { Coordinates } from 'src/app/shared/models/GoogleMap';
 import { Milestone } from 'src/app/shared/models/Milestones';
 import { Polyline } from 'src/app/shared/models/Polyline';
@@ -47,7 +47,7 @@ const specialImgMkIcon: google.maps.Icon = {
 })
 export class MapComponent {
   @Input() milestones: Array<Milestone> = [];
-  @Input() milestoneItemClicked?: Milestone;
+  @Input() milestoneItemClicked$?: BehaviorSubject<Milestone | null>;
   @Output() milestonesToggleEmit: EventEmitter<any> = new EventEmitter();
   @ViewChild(GoogleMap, { static: true }) googleMap?: GoogleMap;
   @ViewChildren('milestoneMarker') mapMarkers?: QueryList<MapMarker>;
@@ -105,11 +105,6 @@ export class MapComponent {
       const milestones: Array<Milestone> = changes['milestones'].currentValue;
       this.initMarkers(milestones);
     }
-
-    if(changes['milestoneItemClicked']){
-      const milestoneItemClicked: Milestone = changes['milestoneItemClicked']?.currentValue;
-      this.findMarkerForInfowindow(milestoneItemClicked)
-    }
   }
 
   ngAfterViewInit(){
@@ -118,6 +113,14 @@ export class MapComponent {
 
   ngOnInit() {
     this.listenMapZoomChangedEvent();
+    this.subscription.add(
+      this.milestoneItemClicked$?.pipe(
+        filter(milestone=>milestone!=null)
+      ).subscribe(res=>{
+        const milestoneItemClicked: Milestone = res!;
+        this.findMarkerForInfowindow(milestoneItemClicked)
+      })
+    )
   }
 
   private addCustomControl(){

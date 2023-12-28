@@ -9,7 +9,7 @@
         >
     </div>
 }
-<present-map  [milestones]="milestones" [milestoneItemClicked]="milestoneItemClicked" (milestonesToggleEmit)="toggle()"></present-map>
+<present-map [milestones]="milestones" [milestoneItemClicked$]="milestoneItemClicked$" (milestonesToggleEmit)="toggle()"></present-map>
 <ng-template #milestonesTemp>
     <div fxLayout="column">
         <div fxFlex fxLayoutAlign="center center">
