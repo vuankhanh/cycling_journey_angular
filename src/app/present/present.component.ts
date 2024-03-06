@@ -62,9 +62,8 @@ export class PresentComponent implements DeactivatableComponent{
 
   private getMilestones(){
     this.subscription.add(
-      this.milestoneService.getAll().subscribe(res=>{
-        let milestoneRespone: MilestonesResponse = res;
-        this.milestones = milestoneRespone.metaData.sort((a, b)=>a.numericalOrder-b.numericalOrder);
+      this.milestoneService.getAllData().subscribe(data=>{
+        this.milestones = data.sort((a, b)=>a.numericalOrder-b.numericalOrder);
       })
     )
   }

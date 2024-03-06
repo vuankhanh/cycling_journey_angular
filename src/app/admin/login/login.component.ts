@@ -46,8 +46,7 @@ export class LoginComponent {
       const password = this.loginForm.controls['password'].value;
       this.subscription.add(
         this.authService.login(username, password).subscribe(res=>{
-          console.log(res);
-          if(res.status === 200){
+          if(res.statusCode === 200 || res.statusCode === 201){
             const token = res.metaData;
             localStorage.setItem('accessToken', token.accessToken);
             localStorage.setItem('refreshToken', token.refreshToken);

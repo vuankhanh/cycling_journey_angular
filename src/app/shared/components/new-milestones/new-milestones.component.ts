@@ -92,7 +92,7 @@ export class NewMilestonesComponent {
     const detailParams: DetailParams = { id };
     this.subscription.add(
       this.albumService.getDetail(detailParams).subscribe(res=>{
-        if(res.status === 200){
+        if(res.statusCode === 200){
           this.album = res.metaData;
         }
       })
@@ -136,7 +136,7 @@ export class NewMilestonesComponent {
     if(this.newMilestoneGroup.valid){
       this.subscription.add(
         this.milestoneService.modify(this.data.data._id, this.newMilestoneGroup.value).subscribe(res=>{
-          if(res.status === 200){
+          if(res.statusCode === 200){
             this.dialogRef.close(res.metaData);
           }
         })
@@ -149,7 +149,7 @@ export class NewMilestonesComponent {
       console.log(this.newMilestoneGroup.value);
       this.subscription.add(
         this.milestoneService.create(this.newMilestoneGroup.value).subscribe(res=>{
-          if(res.status === 201){
+          if(res.statusCode === 201){
             this.dialogRef.close(res.metaData);
           }
         })
