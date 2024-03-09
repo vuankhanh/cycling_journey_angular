@@ -1,3 +1,10 @@
-:host(app-milestones){
-    overflow-y: scroll;
+:host(app-milestones) {
+  overflow-y: scroll;
+}
+
+mat-form-field {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }

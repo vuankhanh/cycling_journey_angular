@@ -23,9 +23,8 @@ export class JourneyComponent {
 
   private getMilestones(){
     this.subscription.add(
-      this.milestoneService.getAll().subscribe(res=>{
-        let milestoneRespone: MilestonesResponse = res;
-        this.milestones = milestoneRespone.metaData.data;
+      this.milestoneService.getAllData().subscribe(res=>{
+        this.milestones = res;
       })
     )
   }

@@ -1,20 +1,22 @@
 @if(config){
+  @if(config.facebookUser){
     <div class="user-information">
-        <img
-            class="avatar"
-            [src]="config.facebookUser.picture?.data?.url| safeMessage : 'url'"
-            [alt]="config.facebookUser.name"
-            matTooltip="{{config.facebookUser.name}}"
-            (click)="redirectToFacebook(config.facebookUser.id)"
-        >
+      <img
+        class="avatar"
+        [src]="config.facebookUser.picture?.data?.url| safeMessage : 'url'"
+        [alt]="config.facebookUser.name"
+        matTooltip="{{config.facebookUser.name}}"
+        (click)="redirectToFacebook(config.facebookUser.id)">
     </div>
+  }
 }
-<present-map [milestones]="milestones" [milestoneItemClicked$]="milestoneItemClicked$" (milestonesToggleEmit)="toggle()"></present-map>
+<present-map [milestones]="milestones" [milestoneItemClicked$]="milestoneItemClicked$"
+  (milestonesToggleEmit)="toggle()"></present-map>
 <ng-template #milestonesTemp>
-    <div fxLayout="column">
-        <div fxFlex fxLayoutAlign="center center">
-            <button (click)="closeMilestoneMenu()"><mat-icon>close</mat-icon></button>
-        </div>
-        <present-milestones [milestones]="milestones" (itemClickEmit)="listenItemClick($event)"></present-milestones>
+  <div fxLayout="column">
+    <div fxFlex fxLayoutAlign="center center">
+      <button (click)="closeMilestoneMenu()"><mat-icon>close</mat-icon></button>
     </div>
+    <present-milestones [milestones]="milestones" (itemClickEmit)="listenItemClick($event)"></present-milestones>
+  </div>
 </ng-template>

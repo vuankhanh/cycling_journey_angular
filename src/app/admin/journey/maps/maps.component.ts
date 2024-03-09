@@ -60,24 +60,20 @@ export class MapsComponent {
     public overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private dialog: MatDialog
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.addCustomControl();
   }
 
-  private addCustomControl(){
-    console.log(this.findAddressContainer.nativeElement);
-    
+  private addCustomControl() {
     this.googleMap?.controls[google.maps.ControlPosition.TOP_LEFT].push(this.findAddressContainer.nativeElement)
   }
 
-  findAddress(control: FormControl){
+  findAddress(control: FormControl) {
     const controlValue = control.value;
     const lat = parseFloat(controlValue.split(',')[0]);
     const lng = parseFloat(controlValue.split(',')[1]);
@@ -110,12 +106,12 @@ export class MapsComponent {
 
   openInfoWindow(marker: MapMarker, milestone: Milestone) {
     this.milestoneMarker = milestone;
-    
+
     this.infoWindow.open(marker);
     this.infoWindowContent = true;
   }
 
-  closeInfoWindow(){
+  closeInfoWindow() {
     this.infoWindowContent = false;
   }
 
@@ -125,7 +121,7 @@ export class MapsComponent {
     }
   }
 
-  openFusilliPanel({clientX, clientY}: MouseEvent, coordinates: google.maps.LatLng) {
+  openFusilliPanel({ clientX, clientY }: MouseEvent, coordinates: google.maps.LatLng) {
     this.closeFusilliPanel();
     let config = new OverlayConfig();
 
@@ -141,7 +137,7 @@ export class MapsComponent {
       $implicit: coordinates
     }));
     this.subscription.add(
-      this.overlayRef.backdropClick().subscribe(e=>{
+      this.overlayRef.backdropClick().subscribe(e => {
         this.closeFusilliPanel();
       })
     )
@@ -152,7 +148,7 @@ export class MapsComponent {
     this.overlayRef = undefined;
   }
 
-  addNewStone(coordinates: google.maps.LatLng){
+  addNewStone(coordinates: google.maps.LatLng) {
     const milestone = {
       coordinates: {
         lat: coordinates.lat(),
@@ -171,14 +167,14 @@ export class MapsComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
-      if(result){
+      if (result) {
         const newMilestone: Milestone = result;
         this.newMilestone.emit(newMilestone);
       }
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 }

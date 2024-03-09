@@ -1,6 +1,9 @@
 <h1>Các cột mốc</h1>
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Tìm kiếm(nhập số cột mốc)">
+</mat-form-field>
 <mat-list>
-  <mat-list-item *ngFor="let milestone of milestones" (click)="update(milestone)" id="gidoday">
+  <mat-list-item #item *ngFor="let milestone of milestones" (click)="update(milestone)" [id]="milestone.numericalOrder +'. '+ milestone.name">
     <mat-icon matListItemIcon>emoji_flags</mat-icon>
     <div matListItemTitle>{{milestone.numericalOrder +'. '+ milestone.name}}</div>
     <div matListItemLine>{{milestone.dateTime | date: 'dd/MM/yyyy'}}</div>

@@ -23,34 +23,39 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-    imports: [CommonModule],
-    exports: [
-        CommonModule,
-        
-        CdkMenuModule,
-        ClipboardModule,
+  imports: [CommonModule],
+  exports: [
+    CommonModule,
 
-        MatMenuModule,
-        MatCardModule,
-        MatButtonModule,
-        MatDialogModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatListModule,
-        MatGridListModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatTableModule,
-        MatTooltipModule,
-        MatBottomSheetModule,
-        MatAutocompleteModule,
-        MatRadioModule,
-        MatCheckboxModule,
-    ]
+    CdkMenuModule,
+    ClipboardModule,
+
+    MatMenuModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatListModule,
+    MatGridListModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTableModule,
+    MatTooltipModule,
+    MatBottomSheetModule,
+    MatAutocompleteModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    ScrollingModule,
+    MatProgressSpinnerModule
+  ]
 })
-export class MaterialModule {}
+export class MaterialModule { }

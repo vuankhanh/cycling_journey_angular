@@ -1,6 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, SimpleChange, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { MatListItem } from '@angular/material/list';
+import { BehaviorSubject, Subject, Subscription, debounceTime } from 'rxjs';
 import { MilestoneData, NewMilestonesComponent } from 'src/app/shared/components/new-milestones/new-milestones.component';
 import { Milestone } from 'src/app/shared/models/Milestones';
 
@@ -11,30 +12,45 @@ import { Milestone } from 'src/app/shared/models/Milestones';
   styleUrls: ['./milestones.component.scss']
 })
 export class MilestonesComponent {
-  @ViewChild('app-milestones') appMilestones?: MilestonesComponent
+  @ViewChild('app-milestones') appMilestones?: MilestonesComponent;
+  @ViewChildren(MatListItem, { read: ElementRef }) items!: QueryList<ElementRef>;
   @Input() milestones: Array<Milestone> = [];
-
   @Output() updateMilestone = new EventEmitter<Milestone>();
-  elem: ElementRef
+  private searchSubject = new Subject<string>();
+  
   subscription: Subscription = new Subscription();
   constructor(
-    elem: ElementRef,
     private dialog: MatDialog
-  ){
-    this.elem = elem
-  }
+  ){ }
+  
   ngOnInit(){
     
   }
 
   ngAfterViewInit(){
-    this.scrollToBottom();
+    this.subscription.add(
+      this.searchSubject.pipe(
+        debounceTime(200) // delay 500ms
+      ).subscribe(value => {
+        const matListItem = this.items.find(item => item.nativeElement.id.startsWith(value));
+        if(matListItem){
+          matListItem.nativeElement.style.backgroundColor = 'rgba(0, 0, 0, 0.04)';
+          matListItem.nativeElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+          setTimeout(() => {
+            matListItem.nativeElement.style.backgroundColor = '';
+          }, 1500);
+        }
+      })
+    )
   }
 
-  private scrollToBottom(){
-    setTimeout(() => {
-      this.elem.nativeElement.scrollTop = this.elem.nativeElement.scrollHeight;
-    })
+  applyFilter(event: KeyboardEvent){
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+    this.searchSubject.next(value);
   }
 
   update(milestone: Milestone){
@@ -51,7 +67,6 @@ export class MilestonesComponent {
       if(result){
         const milestoneIsUpdated: Milestone = result;
         this.updateMilestone.emit(milestoneIsUpdated);
-        this.scrollToBottom();
       }
     });
   }
