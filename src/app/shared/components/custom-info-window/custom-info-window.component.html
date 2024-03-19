@@ -1,18 +1,21 @@
 <ng-container *ngIf="milestone">
+  <mat-card>
     <ng-container *ngIf="galleryItems.length">
-        <gallery
-            [objectFit]="'contain'"
-            [items]="galleryItems"
-            (itemClick)="selection($event)"
-            [thumbs]="galleryConfig.thumbs"
-        ></gallery>
+      <gallery [objectFit]="'contain'" [items]="galleryItems" (itemClick)="selection($event)"
+      [thumbs]="galleryConfig.thumbs"></gallery>
     </ng-container>
-    <mat-list-item>
+    <mat-card-content>
+      <mat-list-item>
         <div matListItemTitle>{{milestone.name}}</div>
         <div matListItemLine>{{milestone.address}}</div>
         <div matListItemLine>{{milestone.dateTime | date: 'dd/MM/yyyy'}}</div>
-    </mat-list-item>
-    <ng-container *ngIf="album">
+      </mat-list-item>
+      <ng-container *ngIf="album">
         <p>{{album.description}}</p>
-    </ng-container>
+      </ng-container>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="openInGoogleMaps(milestone)">Mở trong Google Maps</button>
+    </mat-card-actions>
+  </mat-card>
 </ng-container>

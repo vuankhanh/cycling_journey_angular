@@ -19,8 +19,8 @@ const timed = (interval: number) => <T>(source: Observable<T>) =>
     scan((acc, val) => [...acc, ...val]),
   )
 const centerMap: google.maps.LatLngLiteral = {
-  lat: 16.299623680846395,
-  lng: 105.57691501549118
+  lat: 10.540885960396139,
+  lng: 106.40895992087194
 };
 
 const normalImgMkIcon: google.maps.Icon = {
@@ -64,7 +64,7 @@ export class MapComponent {
   gmOptions: google.maps.MapOptions = {
     mapTypeId: '',
     center: centerMap,
-    zoom: 6,
+    zoom: 16,
     fullscreenControl: false
   };
 

@@ -99,6 +99,14 @@ export class CustomInfoWindowComponent {
     )
   }
 
+  openInGoogleMaps(milestone: Milestone){
+    const link = `https://www.google.com/maps/dir/?api=1&destination=${milestone.coordinates.lat},${milestone.coordinates.lng}&travelmode=driving`
+    const achorElement = document.createElement('a');
+    achorElement.href = link;
+    achorElement.target = '_blank';
+    achorElement.click();
+  }
+
   ngOnDestroy(){
     this.subscription.unsubscribe()
   }
