@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { EMPTY, expand, map, toArray } from 'rxjs';
 import { AlbumDetailRespone, AlbumResponse } from 'src/app/shared/models/Album';
 import { environment } from 'src/environments/environment.development';
 
@@ -11,8 +12,31 @@ export class AlbumService {
   constructor(
     private httpClient: HttpClient
   ) { }
-  getAll(){
-    return this.httpClient.get<AlbumResponse>(this.url);
+  getAll(page?: number, size?: number){
+    let params = new HttpParams();
+    if(page != undefined){
+      params = params.append('page', page)
+    }
+    if(size != undefined){
+      params = params.append('size', size)
+    }
+    return this.httpClient.get<AlbumResponse>(this.url, { params });
+  }
+  getAllData(){
+    let page = 1;
+    return this.getAll().pipe(
+      expand(res =>{
+        page++;
+        const metaData = res.metaData;
+        const paging = metaData.paging;
+        return page <= paging.totalPages && res ? this.getAll(page) : EMPTY
+      }),
+      toArray(),
+      map((arr: Array<AlbumResponse>)=>{
+        const data = arr.map(res=>res.metaData.data).flat();
+        return data
+      })
+    );
   }
   getDetail(detailParams: DetailParams){
     let params = new HttpParams();

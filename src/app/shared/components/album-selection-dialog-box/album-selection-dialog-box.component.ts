@@ -31,14 +31,12 @@ export class AlbumSelectionDialogBoxComponent {
   }
   ngOnInit(){
     this.getAll();
-    
   }
 
   private getAll(){
     this.subscription.add(
-      this.albumService.getAll().subscribe(res=>{
-        const metaData: Array<Album> = res.metaData.data;
-        this.albums = metaData;
+      this.albumService.getAllData().subscribe(data=>{
+        this.albums = data;
       })
     )
   }
