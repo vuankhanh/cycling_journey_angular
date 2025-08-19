@@ -82,7 +82,7 @@ export class MapComponent {
     strokeWeight: 5
   }
 
-  markerClustererImagePath ='https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m';
+  markerClustererImagePath ='assets/markerclusterer/m';
 
   sMkOptions: google.maps.MarkerOptions = {
     icon: specialImgMkIcon,
