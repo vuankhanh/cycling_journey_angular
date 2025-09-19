@@ -1,0 +1,7 @@
+<div class="welcome-container">
+  @if (data.mediaType === 'image') {
+    <img [src]="data.mediaUrl" alt="Welcome Image" style="max-width:100%; max-height:80vh;" />
+  }@else {
+    <video #videoPlayer [src]="data.mediaUrl" controls></video>
+  }
+</div>

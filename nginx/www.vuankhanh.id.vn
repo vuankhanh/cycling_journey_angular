@@ -1,0 +1,4 @@
+server {
+	server_name www.vuankhanh.id.vn;
+	return 301 $scheme://vuankhanh.id.vn$request_uri;
+}
