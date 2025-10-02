@@ -1,11 +1,16 @@
 import { Component, Inject, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { NgxMarqueeComponent } from '@omnedia/ngx-marquee';
 
 @Component({
   selector: 'app-welcome',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+
+    NgxMarqueeComponent
+  ],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.scss'
 })

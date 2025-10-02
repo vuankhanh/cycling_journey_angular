@@ -1,8 +1,14 @@
 .welcome-container {
   display: flex;
-
+  flex-direction: column;
   video {
     max-width: 100%;
+  }
+}
+
+::ng-deep .custom-marquee{
+  .om-marquee-content{
+    box-sizing: border-box;
   }
 }
 

@@ -19,9 +19,14 @@ export class AppComponent implements AfterViewInit {
   }
 
   private openWelcome() {
+    // const data = {
+    //   mediaType:  'video',
+    //   mediaUrl: environment.backendStatic+ '/welcome/kinh-te-tri-thuc-ltd.mp4'
+    // }
+
     const data = {
-      mediaType:  'video',
-      mediaUrl: environment.backendStatic+ '/welcome/kinh-te-tri-thuc-ltd.mp4'
+      mediaType:  'image',
+      mediaUrl: environment.backendStatic+ '/welcome/Middle-Autumn-2025.png'
     }
 
     this.matDialog.open(WelcomeComponent, {
